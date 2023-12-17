@@ -1,9 +1,7 @@
 import {
   Controller,
-  FileTypeValidator,
   Get,
   HttpCode,
-  ParseFilePipe,
   Post,
   UploadedFile,
   UseInterceptors,

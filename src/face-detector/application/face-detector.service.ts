@@ -178,7 +178,6 @@ export class FaceDetectorService {
 
     const result = await this.detect(tensor);
     console.log(result);
-    // this.print(result);
 
     tensor.dispose();
 
