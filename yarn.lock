@@ -703,6 +703,11 @@
     semver "^7.3.5"
     tar "^6.1.11"
 
+"@mediapipe/face_mesh@^0.4.1633559619":
+  version "0.4.1633559619"
+  resolved "https://registry.yarnpkg.com/@mediapipe/face_mesh/-/face_mesh-0.4.1633559619.tgz#f917e4448e25bc375a905d1d910f1bca450c5e23"
+  integrity sha512-Vc8cdjxS5+O2gnjWH9KncYpUCVXT0h714KlWAsyqJvJbIgUJBqpppbIx8yWcAzBDxm/5cYSuBI5p5ySIPxzcEg==
+
 "@nestjs/cli@^10.0.0":
   version "10.2.1"
   resolved "https://registry.yarnpkg.com/@nestjs/cli/-/cli-10.2.1.tgz#a1d32c28e188f0fb4c3f54235c55745de4c6dd7f"
@@ -870,6 +875,21 @@
   resolved "https://registry.yarnpkg.com/@socket.io/component-emitter/-/component-emitter-3.1.0.tgz#96116f2a912e0c02817345b3c10751069920d553"
   integrity sha512-+9jVqKhRSpsc591z5vX+X5Yyw+he/HCB4iQ/RYxw35CEPaY1gnsNE43nf9n9AaYjAQrTiI/mOwKUKdUs9vf7Xg==
 
+"@tensorflow-models/face-detection@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@tensorflow-models/face-detection/-/face-detection-1.0.2.tgz#5667bad30ee95021cc69a90538b5218dd349c65b"
+  integrity sha512-anjSxy3MnZdTiVluOEQZeaFWM30IPswFM+SltX6wseXKja/AbrHYqamGNZKUylAs2JAyudq+xqTRPS+nA2ourg==
+  dependencies:
+    rimraf "^3.0.2"
+    tslib "2.4.0"
+
+"@tensorflow-models/face-landmarks-detection@^1.0.5":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@tensorflow-models/face-landmarks-detection/-/face-landmarks-detection-1.0.5.tgz#ef2e6f03e329d9457afbe7fdbf76fa8bd1e54fc1"
+  integrity sha512-54XJPi8g29/MknJ33ZBrLsEzr9kw/dJtrJMMD3xrCrnRlfFQPIKQ5PI2Wml55Fz2p4U2hemzBB0/H+S94JddIQ==
+  dependencies:
+    rimraf "^3.0.2"
+
 "@tensorflow/tfjs-backend-cpu@4.15.0":
   version "4.15.0"
   resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-backend-cpu/-/tfjs-backend-cpu-4.15.0.tgz#64ca5bd14527ef73c863ac5b93cc2c791acb27f4"
@@ -878,7 +898,7 @@
     "@types/seedrandom" "^2.4.28"
     seedrandom "^3.0.5"
 
-"@tensorflow/tfjs-backend-webgl@4.15.0":
+"@tensorflow/tfjs-backend-webgl@4.15.0", "@tensorflow/tfjs-backend-webgl@^4.15.0":
   version "4.15.0"
   resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-backend-webgl/-/tfjs-backend-webgl-4.15.0.tgz#b5103ceca438c2c8bd6d02ad94fceac1b464a933"
   integrity sha512-FoOva3KjKvWVHAXWAW5Ojboz1IbM1K9i8ggNG7czJgE0La4JHMo814UHSoE6Rc0hkRoOpvDUa+FxsqYOBEhuzQ==
@@ -932,6 +952,20 @@
   resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-layers/-/tfjs-layers-4.15.0.tgz#3ce7b2c856232173ca90f543b79c165017166067"
   integrity sha512-PwIXB7UtGyKVmIcbonqdtArcBgva8DOxeZqklyvb/zfg17GpWeh2++eUHKSpAl5K0mdO5Y2pL4ssD9p6AQqk9w==
 
+"@tensorflow/tfjs-node-gpu@^4.15.0":
+  version "4.15.0"
+  resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-node-gpu/-/tfjs-node-gpu-4.15.0.tgz#215058232467aa20e86c47609effc670084f90c6"
+  integrity sha512-Y09X0fWjk0rtQWFQf6cXwkvGeXFGuOOQMVXnf5v6UwJRiKfMNR9srs/pcfO+aMpPoONFzjoGn14JGeplCL/M9g==
+  dependencies:
+    "@mapbox/node-pre-gyp" "1.0.9"
+    "@tensorflow/tfjs" "4.15.0"
+    adm-zip "^0.5.2"
+    google-protobuf "^3.9.2"
+    https-proxy-agent "^2.2.1"
+    progress "^2.0.0"
+    rimraf "^2.6.2"
+    tar "^4.4.6"
+
 "@tensorflow/tfjs-node@^4.15.0":
   version "4.15.0"
   resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-node/-/tfjs-node-4.15.0.tgz#a8f5a2bd2a6d6df209779a30a0c91f7049890a2e"
@@ -946,7 +980,7 @@
     rimraf "^2.6.2"
     tar "^4.4.6"
 
-"@tensorflow/tfjs@4.15.0", "@tensorflow/tfjs@^4.15.0":
+"@tensorflow/tfjs@4.15.0":
   version "4.15.0"
   resolved "https://registry.yarnpkg.com/@tensorflow/tfjs/-/tfjs-4.15.0.tgz#bdd166972c503f967dd3bddd4028a77e0807c506"
   integrity sha512-SdhKYAx/UiMJuKYxf3aXMOuK4j+rwEGRNlwAMIYPYJAFMySdqZ7hC4ZV6mB8D4LAjkgk35y3zOJ/3MWamstKdg==
@@ -1352,6 +1386,16 @@
   resolved "https://registry.yarnpkg.com/@ungap/structured-clone/-/structured-clone-1.2.0.tgz#756641adb587851b5ccb3e095daf27ae581c8406"
   integrity sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==
 
+"@vladmandic/face-api@^1.7.12":
+  version "1.7.12"
+  resolved "https://registry.yarnpkg.com/@vladmandic/face-api/-/face-api-1.7.12.tgz#dbae5a4c853a8b4e88e2d75f996409a4ea94d67e"
+  integrity sha512-kTdYHhXEuwNJBXbviuJiZiVdAHtKF/wyWchiBzWDSYPsi54fYwFCKu8/+VTyzLvR1u7bJBlJFl2nPbaGqhxGAg==
+
+"@vladmandic/pilogger@^0.4.9":
+  version "0.4.9"
+  resolved "https://registry.yarnpkg.com/@vladmandic/pilogger/-/pilogger-0.4.9.tgz#dccc4051b54e1deea6b471a3a90b5456225eaa18"
+  integrity sha512-dPLciU5XvWlA4teSYsPX3+xwTt7kzh9T2TKtiv2baKDcCMiEW2fZcR++QO8iNghmH6FCXEoKQ8YihlRBLF6saw==
+
 "@webassemblyjs/ast@1.11.6", "@webassemblyjs/ast@^1.11.5":
   version "1.11.6"
   resolved "https://registry.yarnpkg.com/@webassemblyjs/ast/-/ast-1.11.6.tgz#db046555d3c413f8966ca50a95176a0e2c642e24"
@@ -1750,6 +1794,11 @@ balanced-match@^1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.2.tgz#e83e3a7e3f300b34cb9d87f615fa0cbf357690ee"
   integrity sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==
+
+base64-arraybuffer@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/base64-arraybuffer/-/base64-arraybuffer-1.0.2.tgz#1c37589a7c4b0746e34bd1feb951da2df01c1bdc"
+  integrity sha512-I3yl4r9QB5ZRY3XuJVEPfc2XhZO6YweFPI+UovAzn+8/hb3oJ6lnysaFcjVpkCPfVWFUDvoZ8kmVDP7WyRtYtQ==
 
 base64-js@^1.3.1:
   version "1.5.1"
@@ -5431,6 +5480,11 @@ tsconfig-paths@4.2.0, tsconfig-paths@^4.1.2, tsconfig-paths@^4.2.0:
     json5 "^2.2.2"
     minimist "^1.2.6"
     strip-bom "^3.0.0"
+
+tslib@2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.4.0.tgz#7cecaa7f073ce680a05847aa77be941098f36dc3"
+  integrity sha512-d6xOpEDfsi2CZVlPQzGeux8XMwLT9hssAsaPYExaQMuYskwb+x1x7J371tWlbBdWHroy99KnVB6qIkUbs5X3UQ==
 
 tslib@2.6.2, tslib@^2.1.0, tslib@^2.6.0, tslib@^2.6.2:
   version "2.6.2"
