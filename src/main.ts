@@ -7,7 +7,7 @@ import { createSwagger } from './helpers/app/createSwagger';
 import { join } from 'path';
 
 async function bootstrap() {
-  const PORT = process.env.PORT || 5000;
+  const PORT = process.env.PORT || 5001;
 
   const nestFactory =
     await NestFactory.create<NestExpressApplication>(AppModule);

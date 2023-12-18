@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { GatewayModule } from './gateway/gateway.module';
 import { FaceDetectorModule } from './face-detector/face-detector.module';
-import { ImageModule } from './image/image.module';
+import { TemplateModule } from './template/template.module';
 import { LoggerModule } from './logger/logger.module';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -22,7 +22,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     }),
     GatewayModule,
     FaceDetectorModule,
-    ImageModule,
+    TemplateModule,
     LoggerModule,
   ],
 })

@@ -59,7 +59,7 @@ export class AppGateway
 
     const buffer = Buffer.from(base64, 'base64');
 
-    const detectData = await this.fdService.main2(buffer);
+    const detectData = await this.fdService.templateDetection(buffer);
 
     return { event: 'client/detection', data: JSON.stringify(detectData) };
   }
