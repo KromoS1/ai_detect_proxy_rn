@@ -1,0 +1,15 @@
+import { InjectModel } from '@nestjs/sequelize';
+import { Template } from '../domain/entity/template.model';
+import { ITemplateService } from '../domain/dto/template-service.dto';
+import { Injectable } from '@nestjs/common';
+
+@Injectable()
+export class TemplateRepository {
+  constructor(
+    @InjectModel(Template) private templateRepository: typeof Template,
+  ) {}
+
+  async addDataTemplate(templateDto: ITemplateService) {
+    return await this.templateRepository.create(templateDto);
+  }
+}

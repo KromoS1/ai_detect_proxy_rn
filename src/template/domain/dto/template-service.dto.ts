@@ -7,23 +7,23 @@ export type Pokedex = {
 };
 
 export type AlignedRect = {
-  _imageDims: Dims;
-  _score: number;
-  _classScore: number;
-  _className: string;
-  _box: Box;
+  imageDims: Dims;
+  score: number;
+  classScore: number;
+  className: string;
+  box: Box;
 };
 
 export type Box = {
-  _x: number;
-  _y: number;
-  _width: number;
-  _height: number;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
 };
 
 export type Dims = {
-  _width: number;
-  _height: number;
+  width: number;
+  height: number;
 };
 
 export type Angle = {
@@ -33,14 +33,14 @@ export type Angle = {
 };
 
 export type Landmarks = {
-  _imgDims: Dims;
-  _shift: Shift;
-  _positions: Shift[];
+  imgDims: Dims;
+  shift: Shift;
+  positions: Shift[];
 };
 
 export type Shift = {
-  _x: number;
-  _y: number;
+  x: number;
+  y: number;
 };
 
 export interface ITemplateService {

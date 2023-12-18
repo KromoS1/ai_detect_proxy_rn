@@ -2,12 +2,12 @@ import { Column, DataType, Model, Table } from 'sequelize-typescript';
 import { ApiProperty } from '@nestjs/swagger';
 import { ITemplateService } from '../dto/template-service.dto';
 
-@Table({ tableName: 'template', updatedAt: false })
+@Table({ tableName: 'template', updatedAt: false, createdAt: false })
 export class Template extends Model<Template, ITemplateService> {
   @ApiProperty({ example: 1, description: 'template_id' })
   @Column({
-    type: DataType.INTEGER,
     unique: true,
+    type: DataType.INTEGER,
     autoIncrement: true,
     primaryKey: true,
   })
@@ -52,7 +52,7 @@ export class Template extends Model<Template, ITemplateService> {
     example: '{_x: 20, _y: 20}',
     description: 'Строка объекта ..',
   })
-  @Column({ type: DataType.STRING(20), allowNull: false })
+  @Column({ type: DataType.STRING(50), allowNull: false })
   shift: string;
 
   @ApiProperty({

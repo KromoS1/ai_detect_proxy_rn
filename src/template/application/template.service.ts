@@ -1,15 +1,50 @@
 import { Injectable } from '@nestjs/common';
 import { FaceDetectorService } from 'src/face-detector/application/face-detector.service';
+import { ITemplateService } from '../domain/dto/template-service.dto';
+import { TemplateRepository } from '../infrastructure/template.repository';
+import { TemplateQueryRepository } from '../infrastructure/template.queryRepository';
 
 @Injectable()
 export class TemplateService {
-  constructor(private fdService: FaceDetectorService) {}
+  constructor(
+    private fdService: FaceDetectorService,
+    private templateRepository: TemplateRepository,
+    private templateQueryRepository: TemplateQueryRepository,
+  ) {}
 
-  async detectNewTemplate(buffer: Buffer) {
-    // return this.fdService
+  async detectNewTemplate(
+    file_name: string,
+    file_path: string,
+    buffer: Buffer,
+  ) {
+    const data_detection = await this.fdService.templateDetection(buffer);
 
-    const res = await this.fdService.templateDetection(buffer);
+    // TODO вынести это преобразование, может к fase-detection
+    //@ts-ignore
+    const { x, y } = data_detection.landmarks.shift;
+    //@ts-ignore
+    const positions = data_detection.landmarks.positions.map((position) => ({
+      x: position.x,
+      y: position.y,
+    }));
 
-    return true;
+    //@ts-ignore
+    const { roll, pitch, yaw } = data_detection.angle;
+
+    const template: ITemplateService = {
+      file_name,
+      file_path,
+      roll,
+      pitch,
+      yaw,
+      shift: JSON.stringify({ x, y }).replace('.', ','),
+      positions: JSON.stringify(positions).replace('.', ','),
+    };
+
+    return await this.templateRepository.addDataTemplate(template);
+  }
+
+  async getDataTemplateById(template_id: number) {
+    return await this.templateQueryRepository.getTemplateById(template_id);
   }
 }

@@ -6,6 +6,9 @@ import { MulterModule } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { Template } from './domain/entity/template.model';
+import { TemplateRepository } from './infrastructure/template.repository';
+import { destination, fileFilter, filename } from './utils';
+import { TemplateQueryRepository } from './infrastructure/template.queryRepository';
 
 @Module({
   controllers: [TemplateController],
@@ -14,24 +17,13 @@ import { Template } from './domain/entity/template.model';
     FaceDetectorModule,
     MulterModule.register({
       storage: diskStorage({
-        destination: (req, file, cb) => {
-          cb(null, `./assets/template/${req.query.tmpl}`); // Путь для сохранения файлов
-        },
-        filename: (req, file, cb) => {
-          cb(null, file.originalname);
-        },
+        destination,
+        filename,
       }),
-      fileFilter: (req, file, cb) => {
-        const allowedMimeTypes = ['image/jpeg', 'image/png']; // Разрешенные MIME-типы файлов
-        if (allowedMimeTypes.includes(file.mimetype)) {
-          cb(null, true);
-        } else {
-          cb(new Error('Неподдерживаемый формат файла'), false);
-        }
-      },
+      fileFilter,
     }),
   ],
-  providers: [TemplateService],
-  exports: [TemplateService],
+  providers: [TemplateService, TemplateRepository, TemplateQueryRepository],
+  exports: [TemplateService, TemplateQueryRepository],
 })
 export class TemplateModule {}

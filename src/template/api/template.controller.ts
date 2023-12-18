@@ -69,8 +69,23 @@ export class TemplateController {
     }
     const buffer = await fsPromises.readFile(file.path);
 
-    const res = await this.templateService.detectNewTemplate(buffer);
+    const result = await this.templateService.detectNewTemplate(
+      file.originalname,
+      file.path,
+      buffer,
+    );
+
+    if (!result) {
+      throw new BadRequestException({
+        message: 'Ошибка при добавлении шаблона',
+      });
+    }
 
     return { message: 'Шаблон успешно добавлен' };
+  }
+
+  @Get('tmpl')
+  async getTmpl() {
+    return await this.templateService.getDataTemplateById(5);
   }
 }
