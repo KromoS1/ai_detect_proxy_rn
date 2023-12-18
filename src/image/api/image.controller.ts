@@ -3,33 +3,49 @@ import {
   Get,
   HttpCode,
   Post,
+  Query,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
 import { ImageService } from '../application/image.service';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { FaceDetectorService } from 'src/face-detector/application/face-detector.service';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { diskStorage } from 'multer';
 
-@Controller('image')
+@ApiTags('Шаблоны')
+@Controller('template')
 export class ImageController {
-  constructor(
-    private imageService: ImageService,
-    private fdService: FaceDetectorService,
-  ) {}
+  constructor(private imageService: ImageService) {}
 
-  @HttpCode(200)
+  @ApiOperation({ summary: 'Получение списка шаблонов по категориям' })
+  @ApiResponse({
+    status: 200,
+    type: undefined,
+    description: 'Успешная получение списка шаблонов',
+  })
+  @HttpCode(201)
   @Get()
-  async pick() {
-    return { text: 'Hello World!' };
-  }
+  async getListTemplates() {}
 
-  // @HttpCode(201)
+  @ApiOperation({ summary: 'Добавление шаблона' })
+  @ApiResponse({
+    status: 200,
+    type: undefined,
+    description: 'Успешное добавление шаблона',
+  })
+  @HttpCode(201)
   @Post()
-  @UseInterceptors(FileInterceptor('file'))
-  async create(
-    @UploadedFile()
-    file: Express.Multer.File,
-  ) {
-    return this.fdService.main2(file.buffer);
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({
+        destination: './assets/template',
+        filename: (req, file, cb) => {
+          cb(null, `${req.query.tmpl}/${file.originalname}`);
+        },
+      }),
+    }),
+  )
+  async add_template(@Query() queryDto: { tmpl?: string }) {
+    return 'success';
   }
 }
