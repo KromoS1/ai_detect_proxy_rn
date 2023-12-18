@@ -4,10 +4,13 @@ import { TemplateService } from './application/template.service';
 import { FaceDetectorModule } from 'src/face-detector/face-detector.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
+import { SequelizeModule } from '@nestjs/sequelize';
+import { Template } from './domain/entity/template.model';
 
 @Module({
   controllers: [TemplateController],
   imports: [
+    SequelizeModule.forFeature([Template]),
     FaceDetectorModule,
     MulterModule.register({
       storage: diskStorage({

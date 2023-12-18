@@ -17,8 +17,8 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { AddTemplateQueryDto } from '../entity/dto/template.request.dto';
-import { TemplateResponseDto } from '../entity/dto/template.response.dto';
+import { AddTemplateQueryDto } from '../domain/dto/template.request.dto';
+import { TemplateResponseDto } from '../domain/dto/template.response.dto';
 import { promises as fsPromises } from 'fs';
 
 @ApiTags('Шаблоны')
