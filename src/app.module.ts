@@ -7,6 +7,8 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { Template } from './template/domain/entity/template.model';
+import { UserModule } from './user/user.module';
+import { User } from './user/domain/entity/user.model';
 
 @Module({
   imports: [
@@ -29,7 +31,7 @@ import { Template } from './template/domain/entity/template.model';
       username: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      models: [Template],
+      models: [Template, User],
       logging: false,
       retryAttempts: 5,
     }),
@@ -37,6 +39,7 @@ import { Template } from './template/domain/entity/template.model';
     FaceDetectorModule,
     TemplateModule,
     LoggerModule,
+    UserModule,
   ],
 })
 export class AppModule {}
