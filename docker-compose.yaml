@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    env_file:
+      - .development.env
+    command: mysqld --default-authentication-plugin=caching_sha2_password
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: test_database
+      MYSQL_USER: kromos
+      MYSQL_PASSWORD: 1234
+    ports:
+      - '3307:3306'
+    restart: always
