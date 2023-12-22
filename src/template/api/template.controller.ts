@@ -29,12 +29,14 @@ export class TemplateController {
   @ApiOperation({ summary: 'Получение списка шаблонов по категориям' })
   @ApiResponse({
     status: 200,
-    type: undefined,
+    type: [String],
     description: 'Успешная получение списка шаблонов',
   })
   @HttpCode(201)
-  @Get()
-  async getListTemplates() {}
+  @Get('/list')
+  async getListTemplates(@Query('variant') variant: string) {
+    return await this.templateService.getListTemplates(variant);
+  }
 
   @ApiOperation({ summary: 'Добавление шаблона' })
   @ApiResponse({
@@ -82,10 +84,5 @@ export class TemplateController {
     }
 
     return { message: 'Шаблон успешно добавлен' };
-  }
-
-  @Get('tmpl')
-  async getTmpl() {
-    return await this.templateService.getDataTemplateById(5);
   }
 }

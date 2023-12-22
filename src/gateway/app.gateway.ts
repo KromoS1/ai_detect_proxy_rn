@@ -201,15 +201,17 @@ export class AppGateway
 
   defineHints(positions, positionTemplate) {
     const hints = [];
+    console.log(positions);
+    console.log(positionTemplate);
 
     for (let i = 0; i < positions.length; i++) {
       const { x: tx, y: ty } = positionTemplate[i];
       const { x, y } = positions[i];
 
-      const distance = 200;
+      const distance = 300;
 
-      // console.log('плюс x ', x, ' tx ', tx + 150);
-      // console.log('минус x ', x, ' tx ', tx - 150);
+      // console.log('плюс x ', x, ' tx ', tx + 250);
+      // console.log('минус x ', x, ' tx ', tx - 250);
       // console.log('плюс y ', y, ' ty ', ty + 150);
       // console.log('минус y ', y, ' ty ', ty - 150);
 
@@ -230,9 +232,9 @@ export class AppGateway
       }
 
       if (ty > y + distance) {
-        hints.push('down');
-      } else if (ty < y - distance) {
         hints.push('up');
+      } else if (ty < y - distance) {
+        hints.push('down');
       }
     }
 
@@ -277,12 +279,12 @@ export class AppGateway
     console.log(JSON.stringify(detectData?.landmarks._shift, null, 2));
 
     const leftHints = this.defineHints(
-      positions.slice(0, 4),
-      positionTemplate.slice(0, 4),
+      positions.slice(0, 5),
+      positionTemplate.slice(0, 5),
     );
     const rightHints = this.defineHints(
-      positions.slice(5, 9),
-      positionTemplate.slice(5.9),
+      positions.slice(5, 10),
+      positionTemplate.slice(5, 10),
     );
 
     const defineH = (hintsCount) => {

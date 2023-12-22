@@ -3,6 +3,9 @@ import { FaceDetectorService } from 'src/face-detector/application/face-detector
 import { ITemplateService } from '../domain/dto/template-service.dto';
 import { TemplateRepository } from '../infrastructure/template.repository';
 import { TemplateQueryRepository } from '../infrastructure/template.queryRepository';
+import * as fs from 'fs';
+import * as path from 'path';
+import * as process from 'process';
 
 @Injectable()
 export class TemplateService {
@@ -46,5 +49,20 @@ export class TemplateService {
 
   async getDataTemplateById(template_id: number) {
     return await this.templateQueryRepository.getTemplateById(template_id);
+  }
+
+  async getListTemplates(variant) {
+    const list = fs.readdirSync(
+      path.join(process.cwd(), `./assets/template/${variant}`),
+    );
+
+    if (list.length) {
+      return list.map((fileName, i) => ({
+        id: i,
+        link: `${process.env.HTTP_PATH}/${variant}/${fileName}`,
+      }));
+    }
+
+    return [];
   }
 }
