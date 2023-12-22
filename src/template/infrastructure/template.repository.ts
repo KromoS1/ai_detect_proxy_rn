@@ -12,4 +12,12 @@ export class TemplateRepository {
   async addDataTemplate(templateDto: ITemplateService) {
     return await this.templateRepository.create(templateDto);
   }
+
+  async removeTemplate(template_id: number) {
+    const result = await this.templateRepository.destroy({
+      where: { template_id },
+    });
+
+    return result && { template_id };
+  }
 }

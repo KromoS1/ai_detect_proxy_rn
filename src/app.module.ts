@@ -9,6 +9,7 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { Template } from './template/domain/entity/template.model';
 import { UserModule } from './user/user.module';
 import { User } from './user/domain/entity/user.model';
+import { FilesModule } from './files/files.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { User } from './user/domain/entity/user.model';
     TemplateModule,
     LoggerModule,
     UserModule,
+    FilesModule,
   ],
 })
 export class AppModule {}

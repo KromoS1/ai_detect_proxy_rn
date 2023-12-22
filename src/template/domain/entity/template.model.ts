@@ -27,12 +27,12 @@ export class Template extends Model<Template, ITemplateService> {
   @Column({ type: DataType.STRING(100), allowNull: false })
   file_path: string;
 
-  @ApiProperty({
-    example: '{"width": 3024, "height":3697}',
-    description: 'Количество логических пикселей изображения',
-  })
-  @Column({ type: DataType.STRING(50), allowNull: false })
-  imageDims: string;
+  // @ApiProperty({
+  //   example: '{"width": 3024, "height":3697}',
+  //   description: 'Количество логических пикселей изображения',
+  // })
+  // @Column({ type: DataType.STRING(50), allowNull: false })
+  // imageDims: string;
 
   @ApiProperty({
     example: 12,

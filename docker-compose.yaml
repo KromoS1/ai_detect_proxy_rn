@@ -1,16 +1,17 @@
 version: '3.8'
 
 services:
-  db:
-    image: mysql:8.0
+  server:
+    build:
+      context: .
+      dockerfile: ./config/prod/docker/main.Dockerfile
     env_file:
       - .development.env
-    command: mysqld --default-authentication-plugin=caching_sha2_password
-    environment:
-      MYSQL_ROOT_PASSWORD: 1234
-      MYSQL_DATABASE: test_database
-      MYSQL_USER: kromos
-      MYSQL_PASSWORD: 1234
+    volumes:
+      - .:/var/www/ay_detect_proxy_rn
+      - /var/www/ay_detect_proxy_rn/node_modules
     ports:
-      - '3307:3306'
+      - '5005:5000'
+      - '9229:9229'
+    command: yarn start
     restart: always

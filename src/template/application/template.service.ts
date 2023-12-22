@@ -3,9 +3,9 @@ import { FaceDetectorService } from 'src/face-detector/application/face-detector
 import { ITemplateService } from '../domain/dto/template-service.dto';
 import { TemplateRepository } from '../infrastructure/template.repository';
 import { TemplateQueryRepository } from '../infrastructure/template.queryRepository';
-import * as fs from 'fs';
-import * as path from 'path';
 import * as process from 'process';
+import { Template } from '../domain/entity/template.model';
+import { FilesService } from 'src/files/application/files.service';
 
 @Injectable()
 export class TemplateService {
@@ -13,6 +13,7 @@ export class TemplateService {
     private fdService: FaceDetectorService,
     private templateRepository: TemplateRepository,
     private templateQueryRepository: TemplateQueryRepository,
+    private filesService: FilesService,
   ) {}
 
   async detectNewTemplate(
@@ -52,8 +53,8 @@ export class TemplateService {
   }
 
   async getListTemplates(variant) {
-    const list = fs.readdirSync(
-      path.join(process.cwd(), `./assets/template/${variant}`),
+    const list = this.filesService.listFilesByPath(
+      `./assets/template/${variant}`,
     );
 
     if (list.length) {
@@ -64,5 +65,13 @@ export class TemplateService {
     }
 
     return [];
+  }
+
+  async removeTemplate(template: Template) {
+    const { template_id, file_path } = template;
+
+    await this.filesService.removeFile(file_path);
+
+    return await this.templateRepository.removeTemplate(template_id);
   }
 }

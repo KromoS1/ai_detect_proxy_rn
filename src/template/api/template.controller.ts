@@ -1,8 +1,10 @@
 import {
   BadRequestException,
   Controller,
+  Delete,
   Get,
   HttpCode,
+  Param,
   Post,
   Query,
   UploadedFile,
@@ -17,9 +19,13 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { AddTemplateQueryDto } from '../domain/dto/template.request.dto';
+import {
+  AddTemplateQueryDto,
+  TemplateParamDto,
+} from '../domain/dto/template.request.dto';
 import { TemplateResponseDto } from '../domain/dto/template.response.dto';
 import { promises as fsPromises } from 'fs';
+import { BadRequestResult } from 'src/exception/badRequestResult';
 
 @ApiTags('Шаблоны')
 @Controller('template')
@@ -84,5 +90,33 @@ export class TemplateController {
     }
 
     return { message: 'Шаблон успешно добавлен' };
+  }
+
+  @ApiOperation({ summary: 'Удалить шаблон' })
+  @ApiResponse({
+    status: 200,
+    type: '',
+    description: 'Успешное удаление шаблона',
+  })
+  @ApiResponse({
+    status: 400,
+    type: BadRequestResult,
+    description: 'Ошибка удаления шаблона',
+  })
+  @HttpCode(200)
+  @Delete(':template_id')
+  async removeTemplate(@Param() paramDto: TemplateParamDto) {
+    const template = await this.templateService.getDataTemplateById(
+      paramDto.template_id,
+    );
+
+    if (!template) {
+      throw new BadRequestException({
+        message: 'Шаблон не найден',
+        fields: ['template_id'],
+      });
+    }
+
+    return await this.templateService.removeTemplate(template);
   }
 }
