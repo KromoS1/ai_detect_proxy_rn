@@ -7,12 +7,13 @@
   "license": "UNLICENSED",
   "scripts": {
     "build": "nest build",
-    "start": "cross-env NODE_ENV=development nest start",
+    "start": "cross-env NODE_ENV=test nest start",
     "start:dev": "cross-env NODE_ENV=development nest start --watch",
     "start:debug": "cross-env NODE_ENV=development nest start --debug --watch",
     "start:prod": "node dist/main",
     "test": "cross-env NODE_ENV=development jest",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "migrate": "npx sequelize-cli db:migrate"
   },
   "dependencies": {
     "@mediapipe/face_mesh": "^0.4.1633559619",
@@ -52,6 +53,7 @@
     "swagger-ui-express": "^5.0.0"
   },
   "devDependencies": {
+    "sequelize-cli": "6.3.0",
     "@nestjs/cli": "^10.0.0",
     "@nestjs/schematics": "^10.0.0",
     "@nestjs/testing": "^10.0.0",

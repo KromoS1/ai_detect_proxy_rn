@@ -35,6 +35,7 @@ import { FilesModule } from './files/files.module';
       models: [Template, User],
       logging: false,
       retryAttempts: 5,
+      autoLoadModels: true,
     }),
     GatewayModule,
     FaceDetectorModule,
