@@ -40,4 +40,8 @@ export class FilesService {
       });
     }
   }
+
+  async getBuffer(file_path: string) {
+    return await fs.promises.readFile(file_path);
+  }
 }

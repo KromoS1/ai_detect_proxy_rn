@@ -6,6 +6,8 @@ import { TemplateQueryRepository } from '../infrastructure/template.queryReposit
 import * as process from 'process';
 import { Template } from '../domain/entity/template.model';
 import { FilesService } from 'src/files/application/files.service';
+import { LandmarksService } from 'src/face-detector/application/landmarks.service';
+import { VariantsTemplateType } from 'src/face-detector/domain/dto/face-detector.service.dto';
 
 @Injectable()
 export class TemplateService {
@@ -14,35 +16,26 @@ export class TemplateService {
     private templateRepository: TemplateRepository,
     private templateQueryRepository: TemplateQueryRepository,
     private filesService: FilesService,
+    private landmarksService: LandmarksService,
   ) {}
 
-  async detectNewTemplate(
-    file_name: string,
-    file_path: string,
-    buffer: Buffer,
-  ) {
+  async detectNewTemplate(file_name: string, file_path: string, type: string) {
+    const buffer = await this.filesService.getBuffer(file_path);
     const data_detection = await this.fdService.templateDetection(buffer);
 
-    // TODO вынести это преобразование, может к fase-detection
-    //@ts-ignore
-    const { x, y } = data_detection.landmarks.shift;
-    //@ts-ignore
-    const positions = data_detection.landmarks.positions.map((position) => ({
-      x: position.x,
-      y: position.y,
-    }));
-
-    //@ts-ignore
-    const { roll, pitch, yaw } = data_detection.angle;
+    const { positions, shift, imgDims } =
+      this.landmarksService.getLandmarksData(
+        type.toUpperCase() as VariantsTemplateType,
+        data_detection,
+      );
 
     const template: ITemplateService = {
+      type,
       file_name,
       file_path,
-      roll,
-      pitch,
-      yaw,
-      shift: JSON.stringify({ x, y }).replace('.', ','),
-      positions: JSON.stringify(positions).replace('.', ','),
+      imgDims: JSON.stringify(imgDims),
+      shift: JSON.stringify(shift),
+      positions: JSON.stringify(positions),
     };
 
     return await this.templateRepository.addDataTemplate(template);

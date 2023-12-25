@@ -24,9 +24,7 @@ import {
   TemplateParamDto,
 } from '../domain/dto/template.request.dto';
 import { TemplateResponseDto } from '../domain/dto/template.response.dto';
-import { promises as fsPromises } from 'fs';
 import { BadRequestResult } from 'src/exception/badRequestResult';
-
 @ApiTags('Шаблоны')
 @Controller('template')
 export class TemplateController {
@@ -50,6 +48,11 @@ export class TemplateController {
     type: TemplateResponseDto,
     description: 'Успешное добавление шаблона',
   })
+  @ApiResponse({
+    status: 400,
+    type: BadRequestResult,
+    description: 'Ошибка добавления шаблона',
+  })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
@@ -72,20 +75,21 @@ export class TemplateController {
   ) {
     if (!queryDo.tmpl) {
       throw new BadRequestException({
-        message: 'Вы не указали query parameter -> tmpl',
+        message: 'Вы не указали query parameter',
+        fields: ['tmpl'],
       });
     }
-    const buffer = await fsPromises.readFile(file.path);
 
     const result = await this.templateService.detectNewTemplate(
       file.originalname,
       file.path,
-      buffer,
+      queryDo.tmpl,
     );
 
     if (!result) {
       throw new BadRequestException({
-        message: 'Ошибка при добавлении шаблона',
+        message: 'Ошибка при добавлении шаблона.',
+        fields: ['filename'],
       });
     }
 

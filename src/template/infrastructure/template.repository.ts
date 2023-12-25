@@ -10,7 +10,11 @@ export class TemplateRepository {
   ) {}
 
   async addDataTemplate(templateDto: ITemplateService) {
-    return await this.templateRepository.create(templateDto);
+    try {
+      return await this.templateRepository.create(templateDto);
+    } catch (error) {
+      return null;
+    }
   }
 
   async removeTemplate(template_id: number) {

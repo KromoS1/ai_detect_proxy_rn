@@ -46,10 +46,9 @@ export type Shift = {
 export interface ITemplateService {
   file_name: string;
   file_path: string;
-  roll: number;
-  pitch: number;
-  yaw: number;
 
+  type: string;
+  imgDims: string;
   shift: string;
   positions: string;
 }
