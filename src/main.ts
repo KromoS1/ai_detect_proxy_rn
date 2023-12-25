@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { createApp } from './helpers/app/createApp';
-import { KromLogger } from './logger/logger.service';
+import { KromLogger } from './helpers/logger/logger.service';
 import { createSwagger } from './helpers/app/createSwagger';
 import { join } from 'path';
 

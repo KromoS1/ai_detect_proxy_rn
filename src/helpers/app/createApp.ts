@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { useContainer } from 'class-validator';
 import { AppModule } from 'src/app.module';
-import { HttpExceptionFilter } from 'src/exception/http.exception';
+import { HttpExceptionFilter } from 'src/helpers/exception/http.exception';
 
 export const createApp = (app: INestApplication): INestApplication => {
   const exceptionFactoryFunc = (errors) => {

@@ -7,7 +7,12 @@ import {
   WebSocketServer,
   WsResponse,
 } from '@nestjs/websockets';
-import { Logger } from '@nestjs/common';
+import {
+  CanActivate,
+  ExecutionContext,
+  Injectable,
+  Logger,
+} from '@nestjs/common';
 import { Server, Socket } from 'socket.io';
 
 import { FaceDetectorService } from 'src/face-detector/application/face-detector.service';
@@ -182,6 +187,12 @@ export class AppGateway
     private landmarksService: LandmarksService,
   ) {}
 
+  /**
+   * Конструктор для создания книги
+   * @constructor
+   * @param {string} title - Название книги
+   * @param {string} author - Автор книги
+   */
   afterInit() {
     this.logger.log(`${Server.name} initialized`);
   }

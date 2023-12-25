@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as process from 'process';
-import { KromLogger } from 'src/logger/logger.service';
+import { KromLogger } from 'src/helpers/logger/logger.service';
 
 @Injectable()
 export class FilesService {

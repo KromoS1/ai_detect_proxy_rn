@@ -24,7 +24,7 @@ import {
   TemplateParamDto,
 } from '../domain/dto/template.request.dto';
 import { TemplateResponseDto } from '../domain/dto/template.response.dto';
-import { BadRequestResult } from 'src/exception/badRequestResult';
+import { BadRequestResult } from 'src/helpers/exception/badRequestResult';
 @ApiTags('Шаблоны')
 @Controller('template')
 export class TemplateController {

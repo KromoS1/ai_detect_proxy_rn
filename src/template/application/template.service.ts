@@ -5,7 +5,7 @@ import { TemplateRepository } from '../infrastructure/template.repository';
 import { TemplateQueryRepository } from '../infrastructure/template.queryRepository';
 import * as process from 'process';
 import { Template } from '../domain/entity/template.model';
-import { FilesService } from 'src/files/application/files.service';
+import { FilesService } from 'src/helpers/files/application/files.service';
 import { LandmarksService } from 'src/face-detector/application/landmarks.service';
 import { VariantsTemplateType } from 'src/face-detector/domain/dto/face-detector.service.dto';
 

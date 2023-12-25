@@ -9,7 +9,7 @@ import { Template } from './domain/entity/template.model';
 import { TemplateRepository } from './infrastructure/template.repository';
 import { destination, fileFilter, filename } from './utils';
 import { TemplateQueryRepository } from './infrastructure/template.queryRepository';
-import { FilesModule } from 'src/files/files.module';
+import { FilesModule } from 'src/helpers/files/files.module';
 
 @Module({
   controllers: [TemplateController],

@@ -2,16 +2,18 @@ import { Module } from '@nestjs/common';
 import { GatewayModule } from './gateway/gateway.module';
 import { FaceDetectorModule } from './face-detector/face-detector.module';
 import { TemplateModule } from './template/template.module';
-import { LoggerModule } from './logger/logger.module';
+import { LoggerModule } from './helpers/logger/logger.module';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { Template } from './template/domain/entity/template.model';
 import { UserModule } from './user/user.module';
 import { User } from './user/domain/entity/user.model';
-import { FilesModule } from './files/files.module';
+import { FilesModule } from './helpers/files/files.module';
+import { CronTasksService } from './helpers/scheduler/cron-tasks.service';
 
 @Module({
+  providers: [CronTasksService],
   imports: [
     ConfigModule.forRoot({
       envFilePath: `.${process.env.NODE_ENV}.env`,

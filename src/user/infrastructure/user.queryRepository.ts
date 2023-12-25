@@ -9,4 +9,8 @@ export class UserQueryRepository {
   async getAllUsers() {
     return await this.userQueryRepository.findAll();
   }
+
+  async getUserById(id: number) {
+    return await this.userQueryRepository.findOne({ where: { id } });
+  }
 }
