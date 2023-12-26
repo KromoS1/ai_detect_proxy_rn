@@ -48,4 +48,10 @@ export class FilesService {
   async getBuffer(file_path: string) {
     return await fs.promises.readFile(file_path);
   }
+
+  getBufferFromBase64(base64: string, type_file: string): Buffer {
+    const data = base64.replace(`data:${type_file};base64,`, '');
+
+    return Buffer.from(data, 'base64');
+  }
 }

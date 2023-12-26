@@ -8,6 +8,7 @@ import { GatewayModule } from './gateway/gateway.module';
 import { FilesModule } from './helpers/files/files.module';
 import { LoggerModule } from './helpers/logger/logger.module';
 import { CronTasksService } from './helpers/scheduler/cron-tasks.service';
+import { HintsModule } from './hints/hints.module';
 import { Template } from './template/domain/entity/template.model';
 import { TemplateModule } from './template/template.module';
 import { User } from './user/domain/entity/user.model';
@@ -46,6 +47,7 @@ import { UserModule } from './user/user.module';
     LoggerModule,
     UserModule,
     FilesModule,
+    HintsModule,
   ],
 })
 export class AppModule {}

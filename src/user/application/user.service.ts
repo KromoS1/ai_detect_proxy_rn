@@ -9,4 +9,8 @@ export class UserService {
   async getUserById(id: number) {
     return await this.userQueryRepository.getUserById(id);
   }
+
+  async getUserByParams(id: number, email: string) {
+    return await this.userQueryRepository.getUserById(id);
+  }
 }

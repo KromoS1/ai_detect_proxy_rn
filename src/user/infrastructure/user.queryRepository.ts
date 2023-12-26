@@ -14,4 +14,8 @@ export class UserQueryRepository {
   async getUserById(id: number) {
     return await this.userQueryRepository.findOne({ where: { id } });
   }
+
+  async getUserByParams(id: number, email: string) {
+    return await this.userQueryRepository.findOne({ where: { id, email } });
+  }
 }
