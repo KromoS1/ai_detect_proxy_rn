@@ -13,6 +13,7 @@ async function bootstrap() {
     await NestFactory.create<NestExpressApplication>(AppModule);
 
   nestFactory.useStaticAssets(join(__dirname, '..', 'assets', 'template'));
+  nestFactory.useStaticAssets(join(__dirname, '..', 'assets', 'docs'));
 
   const app = createApp(nestFactory);
 

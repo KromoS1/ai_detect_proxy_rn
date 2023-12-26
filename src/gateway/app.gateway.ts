@@ -171,6 +171,7 @@ const d1_2Post = [
   { x: 2197.3516771793365, y: 2071.014052663327 },
 ];
 
+/** @module Socket */
 @WebSocketGateway({
   transports: ['websocket'],
   maxHttpBufferSize: 1e8,
@@ -187,16 +188,14 @@ export class AppGateway
     private landmarksService: LandmarksService,
   ) {}
 
-  /**
-   * Конструктор для создания книги
-   * @constructor
-   * @param {string} title - Название книги
-   * @param {string} author - Автор книги
-   */
   afterInit() {
     this.logger.log(`${Server.name} initialized`);
   }
 
+  /**
+   * Функиция запускаемая при подключении к сокету,
+   * Будет проверять авторизацию пользователя
+   */
   async handleConnection(socket: Socket, ...args: any[]) {
     this.logger.warn(`open Client_id: ${socket.id}`);
   }
@@ -259,6 +258,12 @@ export class AppGateway
     }, {});
   }
 
+  /**
+   * Событие 'server/detection'
+   * Используется для определения точек по шаблону.
+   * @param {string} dataString - строковое представление объекта в котором будет поле base64 картинки без  (data:image/jpeg;base64,)
+   * {event: 'client/detection', data: {}} в dat будут подсказки
+   */
   @SubscribeMessage('server/detection')
   async handleDataTensor(
     socket: Socket,
