@@ -1,3 +1,4 @@
+import { CanActivate, ExecutionContext, Injectable, Logger } from '@nestjs/common';
 import {
   OnGatewayConnection,
   OnGatewayDisconnect,
@@ -7,12 +8,6 @@ import {
   WebSocketServer,
   WsResponse,
 } from '@nestjs/websockets';
-import {
-  CanActivate,
-  ExecutionContext,
-  Injectable,
-  Logger,
-} from '@nestjs/common';
 import { Server, Socket } from 'socket.io';
 
 import { FaceDetectorService } from 'src/face-detector/application/face-detector.service';
@@ -176,17 +171,12 @@ const d1_2Post = [
   transports: ['websocket'],
   maxHttpBufferSize: 1e8,
 })
-export class AppGateway
-  implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
-{
+export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer() wss: Server;
 
   private logger: Logger = new Logger('GATEWAY');
 
-  constructor(
-    private fdService: FaceDetectorService,
-    private landmarksService: LandmarksService,
-  ) {}
+  constructor(private fdService: FaceDetectorService, private landmarksService: LandmarksService) {}
 
   afterInit() {
     this.logger.log(`${Server.name} initialized`);
@@ -211,6 +201,7 @@ export class AppGateway
 
   defineHints(positions, positionTemplate) {
     const hints = [];
+
     console.log(positions);
     console.log(positionTemplate);
 
@@ -225,12 +216,7 @@ export class AppGateway
       // console.log('плюс y ', y, ' ty ', ty + 150);
       // console.log('минус y ', y, ' ty ', ty - 150);
 
-      if (
-        tx < x + distance &&
-        tx > x - distance &&
-        ty < y + distance &&
-        ty > y - distance
-      ) {
+      if (tx < x + distance && tx > x - distance && ty < y + distance && ty > y - distance) {
         hints.push('ok');
         continue;
       }
@@ -254,6 +240,7 @@ export class AppGateway
   countValues(arr) {
     return arr.reduce((count, value) => {
       count[value] = (count[value] || 0) + 1;
+
       return count;
     }, {});
   }
@@ -265,10 +252,7 @@ export class AppGateway
    * {event: 'client/detection', data: {}} в dat будут подсказки
    */
   @SubscribeMessage('server/detection')
-  async handleDataTensor(
-    socket: Socket,
-    dataString: string,
-  ): Promise<WsResponse<any>> {
+  async handleDataTensor(socket: Socket, dataString: string): Promise<WsResponse<any>> {
     const data = JSON.parse(dataString);
 
     const base64 = data.base64.replace(`data:${data.fileType};base64,`, '');
@@ -277,41 +261,28 @@ export class AppGateway
 
     const detectData = await this.fdService.templateDetection(buffer);
 
-    if (!detectData)
-      return { event: 'client/detection', data: JSON.stringify([]) };
+    if (!detectData) return { event: 'client/detection', data: JSON.stringify([]) };
 
-    const { positions, angle } = this.landmarksService.getLandmarksData(
-      'EYEBROWS',
-      detectData,
-    );
+    const { positions, angle } = this.landmarksService.getLandmarksData('EYEBROWS', detectData);
 
-    const positionTemplate = this.landmarksService.getPosition(
-      'EYEBROWS',
-      d1Positions,
-    );
+    const positionTemplate = this.landmarksService.getPosition('EYEBROWS', d1Positions);
 
     const hints = [];
+
     //@ts-ignore
     console.log(JSON.stringify(detectData?.landmarks._shift, null, 2));
 
-    const leftHints = this.defineHints(
-      positions.slice(0, 5),
-      positionTemplate.slice(0, 5),
-    );
-    const rightHints = this.defineHints(
-      positions.slice(5, 10),
-      positionTemplate.slice(5, 10),
-    );
+    const leftHints = this.defineHints(positions.slice(0, 5), positionTemplate.slice(0, 5));
+    const rightHints = this.defineHints(positions.slice(5, 10), positionTemplate.slice(5, 10));
 
     const defineH = (hintsCount) => {
       const { ok, ...resthint } = hintsCount;
+
       if (!ok) return Object.keys(resthint);
 
       const res = [];
 
-      Object.entries(resthint).forEach((h) =>
-        ok >= h[1] ? res.push(h[0]) : undefined,
-      );
+      Object.entries(resthint).forEach((h) => (ok >= h[1] ? res.push(h[0]) : undefined));
 
       if (res.length) return res;
 

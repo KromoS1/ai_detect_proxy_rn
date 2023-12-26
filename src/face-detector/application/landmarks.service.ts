@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
+
 import { AngleDto, ShiftDto } from '../domain/dto/detection.dto';
 import { VariantsTemplateType } from '../domain/dto/face-detector.service.dto';
+
 import { Dims } from 'src/template/domain/dto/template-service.dto';
 
 @Injectable()
@@ -34,11 +36,13 @@ export class LandmarksService {
 
   getShift(detectData): ShiftDto {
     const { _x, _y } = detectData.landmarks.shift;
+
     return { x: _x, y: _y } as ShiftDto;
   }
 
   getImgDims(detectData): Dims {
     const { _width, _height } = detectData.detection._imageDims;
+
     return { width: _width, height: _height } as Dims;
   }
 }

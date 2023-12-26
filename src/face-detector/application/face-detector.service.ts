@@ -1,10 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import * as fs from 'fs';
+import * as path from 'path';
 
+import { Injectable } from '@nestjs/common';
 import * as tf from '@tensorflow/tfjs-node';
 import * as faceapi from '@vladmandic/face-api';
-import * as fs from 'fs';
 import * as log from '@vladmandic/pilogger';
-import * as path from 'path';
 
 import FDConfig from '../helpers/face-detector.config';
 
@@ -117,12 +117,12 @@ export class FaceDetectorService {
 
   async detect(tensor) {
     try {
-      const result = await faceapi
-        .detectSingleFace(tensor, this.optionsSSDMobileNet)
-        .withFaceLandmarks();
+      const result = await faceapi.detectSingleFace(tensor, this.optionsSSDMobileNet).withFaceLandmarks();
+
       return result;
     } catch (err) {
       log.error('Caught error', err.message);
+
       return [];
     }
   }
@@ -153,20 +153,14 @@ export class FaceDetectorService {
       if (decode.shape[2] === 4) {
         //@ts-ignore
         const channels = faceapi.tf.split(decode, 4, 2);
-        const rgb = faceapi.tf.stack(
-          [channels[0], channels[1], channels[2]],
-          2,
-        );
-        expand = faceapi.tf.reshape(rgb, [
-          1,
-          decode.shape[0],
-          decode.shape[1],
-          3,
-        ]);
+        const rgb = faceapi.tf.stack([channels[0], channels[1], channels[2]], 2);
+
+        expand = faceapi.tf.reshape(rgb, [1, decode.shape[0], decode.shape[1], 3]);
       } else {
         expand = faceapi.tf.expandDims(decode, 0);
       }
       const cast = faceapi.tf.cast(expand, 'float32');
+
       return cast;
     });
   }

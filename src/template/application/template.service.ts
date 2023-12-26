@@ -1,13 +1,16 @@
-import { Injectable } from '@nestjs/common';
-import { FaceDetectorService } from 'src/face-detector/application/face-detector.service';
-import { ITemplateService } from '../domain/dto/template-service.dto';
-import { TemplateRepository } from '../infrastructure/template.repository';
-import { TemplateQueryRepository } from '../infrastructure/template.queryRepository';
 import * as process from 'process';
+
+import { Injectable } from '@nestjs/common';
+
+import { ITemplateService } from '../domain/dto/template-service.dto';
 import { Template } from '../domain/entity/template.model';
-import { FilesService } from 'src/helpers/files/application/files.service';
+import { TemplateQueryRepository } from '../infrastructure/template.queryRepository';
+import { TemplateRepository } from '../infrastructure/template.repository';
+
+import { FaceDetectorService } from 'src/face-detector/application/face-detector.service';
 import { LandmarksService } from 'src/face-detector/application/landmarks.service';
 import { VariantsTemplateType } from 'src/face-detector/domain/dto/face-detector.service.dto';
+import { FilesService } from 'src/helpers/files/application/files.service';
 
 @Injectable()
 export class TemplateService {
@@ -23,11 +26,10 @@ export class TemplateService {
     const buffer = await this.filesService.getBuffer(file_path);
     const data_detection = await this.fdService.templateDetection(buffer);
 
-    const { positions, shift, imgDims } =
-      this.landmarksService.getLandmarksData(
-        type.toUpperCase() as VariantsTemplateType,
-        data_detection,
-      );
+    const { positions, shift, imgDims } = this.landmarksService.getLandmarksData(
+      type.toUpperCase() as VariantsTemplateType,
+      data_detection,
+    );
 
     const template: ITemplateService = {
       type,
@@ -46,9 +48,7 @@ export class TemplateService {
   }
 
   async getListTemplates(variant) {
-    const list = this.filesService.listFilesByPath(
-      `./assets/template/${variant}`,
-    );
+    const list = this.filesService.listFilesByPath(`./assets/template/${variant}`);
 
     if (list.length) {
       return list.map((fileName, i) => ({

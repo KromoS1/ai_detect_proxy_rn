@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
-import { Cron, CronExpression } from '@nestjs/schedule';
+import * as fs from 'fs';
 import * as path from 'path';
 import * as process from 'process';
-import * as fs from 'fs';
+
+import { Injectable } from '@nestjs/common';
+import { Cron, CronExpression } from '@nestjs/schedule';
 
 @Injectable()
 export class CronTasksService {

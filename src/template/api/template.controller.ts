@@ -10,7 +10,6 @@ import {
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
-import { TemplateService } from '../application/template.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import {
   ApiBody,
@@ -19,11 +18,14 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
+
+import { TemplateService } from '../application/template.service';
 import {
   AddTemplateQueryDto,
   TemplateParamDto,
 } from '../domain/dto/template.request.dto';
 import { TemplateResponseDto } from '../domain/dto/template.response.dto';
+
 import { BadRequestResult } from 'src/helpers/exception/badRequestResult';
 @ApiTags('Шаблоны')
 @Controller('template')

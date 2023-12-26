@@ -1,6 +1,8 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication, ValidationPipe } from '@nestjs/common';
 import * as process from 'process';
+
+import { INestApplication, ValidationPipe } from '@nestjs/common';
+import { Test, TestingModule } from '@nestjs/testing';
+
 import { AppModule } from '../../src/app.module';
 
 describe('Files tests ', () => {

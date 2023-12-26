@@ -1,5 +1,6 @@
-import { UserQueryRepository } from '../infrastructure/user.queryRepository';
 import { Injectable } from '@nestjs/common';
+
+import { UserQueryRepository } from '../infrastructure/user.queryRepository';
 
 @Injectable()
 export class UserService {

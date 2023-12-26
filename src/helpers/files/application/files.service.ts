@@ -1,7 +1,9 @@
-import { Injectable } from '@nestjs/common';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as process from 'process';
+
+import { Injectable } from '@nestjs/common';
+
 import { KromLogger } from 'src/helpers/logger/logger.service';
 
 @Injectable()
@@ -32,9 +34,11 @@ export class FilesService {
 
     if (isFile) {
       const directoryPath = path.join(process.cwd(), file_path);
+
       fs.unlink(directoryPath, (err) => {
         if (err) {
           this.logger.error(err.message, err.stack, err.name);
+
           return;
         }
       });

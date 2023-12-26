@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+
 import { KromLogger } from './logger.service';
 
 @Module({

@@ -1,4 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
+
 import { UserQueryRepository } from '../infrastructure/user.queryRepository';
 
 @Controller('users')

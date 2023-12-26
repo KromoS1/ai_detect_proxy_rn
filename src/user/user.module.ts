@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { User } from './domain/entity/user.model';
-import { UserQueryRepository } from './infrastructure/user.queryRepository';
+
 import { UserController } from './api/user.controller';
 import { UserService } from './application/user.service';
+import { User } from './domain/entity/user.model';
+import { UserQueryRepository } from './infrastructure/user.queryRepository';
 
 @Module({
   controllers: [UserController],

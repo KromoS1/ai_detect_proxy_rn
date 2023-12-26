@@ -1,6 +1,7 @@
+import * as fs from 'fs';
+
 import { Injectable, Logger } from '@nestjs/common';
 import * as moment from 'moment';
-import * as fs from 'fs';
 
 type NamesFileType = {
   log: 'log';
@@ -51,28 +52,20 @@ export class LoggerFile {
   };
 
   private appendFile = (nameFile: NamesKeyFileType, message: string) => {
-    fs.appendFile(
-      `logs/${this.dirDate}/${nameFile}.log`,
-      message,
-      (err: Error) => {
-        if (err) this.logger.log(err);
-      },
-    );
+    fs.appendFile(`logs/${this.dirDate}/${nameFile}.log`, message, (err: Error) => {
+      if (err) this.logger.log(err);
+    });
   };
 
   writeFile = (message: string) => {
-    fs.readFile(
-      `./logs/${this.dirDate}/${this.name_file_log}.log`,
-      'utf-8',
-      (err: Error) => {
-        if (err) {
-          this.openFile(this.name_file_log);
-        }
+    fs.readFile(`./logs/${this.dirDate}/${this.name_file_log}.log`, 'utf-8', (err: Error) => {
+      if (err) {
+        this.openFile(this.name_file_log);
+      }
 
-        const updateMessage = `[${this.nowTime}]\n${message}\n\n`;
+      const updateMessage = `[${this.nowTime}]\n${message}\n\n`;
 
-        this.appendFile(this.name_file_log, updateMessage);
-      },
-    );
+      this.appendFile(this.name_file_log, updateMessage);
+    });
   };
 }

@@ -8,6 +8,7 @@ export const filename = (_, file, cb) => {
 
 export const fileFilter = (_, file, cb) => {
   const allowedMimeTypes = ['image/jpeg', 'image/png']; // Разрешенные MIME-типы файлов
+
   if (allowedMimeTypes.includes(file.mimetype)) {
     cb(null, true);
   } else {
