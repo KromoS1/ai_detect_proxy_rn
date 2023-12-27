@@ -58,15 +58,22 @@ export class AppGateway
 
     this.kromLogger.socket(
       'log',
-      `Open connection: user_id = ${user_id}, template_id = ${template_id}`,
+      `Open: user_id = ${user_id}, template_id = ${template_id}`,
       socket.id,
     );
   }
 
   handleDisconnect(socket: Socket) {
+    const { template_id, user_id } = socket.handshake.query;
+
     this.disconnectSocket(socket);
     this.hintsService.removeClientTemplate(socket.id);
-    this.logger.warn(`close Client_id: ${socket.id}`);
+
+    this.kromLogger.socket(
+      'log',
+      `Close: user_id = ${user_id}, template_id = ${template_id}`,
+      socket.id,
+    );
   }
 
   private disconnectSocket(socket: Socket) {
