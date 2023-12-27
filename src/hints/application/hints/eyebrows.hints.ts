@@ -20,7 +20,7 @@ export class EyebrowsHints extends Hints implements IHints {
 
     return ['ok'];
   }
-
+  //TODO: сделать расчет наоборот, пройтись по точкам двух массивов и отнять значения, после результрующий массив сравивать с distance и генерить подсказки
   defineHintsEachPoint(positions: ShiftDto[], positionTemplate: ShiftDto[]) {
     const hintsShift = [];
 

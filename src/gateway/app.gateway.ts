@@ -32,6 +32,11 @@ export class AppGateway
     private kromLogger: KromLogger,
   ) {}
 
+  /**
+   * Метод запускается автоматически после запуска проекта и инициализации модулей.
+   * В методе запускается создание и привязка middleware для проверки пользователя, который будет подключаться
+   * Проверка осуществляется по user_id и email
+   */
   afterInit(server: Server) {
     const middleware = this.socketService.socketMiddleware();
 
@@ -39,15 +44,20 @@ export class AppGateway
     this.kromLogger.socket('log', `${AppGateway.name} initialized`);
   }
 
+  /**
+   * Метод запускается автоматически после соединения с пользователем.
+   * В методе вызывается поиск и сохранение шаблона для использования в сокете.
+   * Если шаблон найдет пользователю возвращается событие client/data_template с data: imgDims - количество логических пикселей изображения шаблона
+   */
   async handleConnection(socket: Socket, ...args: any[]) {
     const { template_id, user_id } = socket.handshake.query;
 
-    const isLoad = await this.hintsService.loadTemplate(
+    const template = await this.hintsService.loadTemplate(
       +template_id as number,
       socket.id,
     );
 
-    if (!isLoad) {
+    if (!template) {
       this.kromLogger.socket(
         'error',
         `invalid template_id = ${template_id}`,
@@ -61,6 +71,10 @@ export class AppGateway
       `Open: user_id = ${user_id}, template_id = ${template_id}`,
       socket.id,
     );
+
+    socket.emit('client/data_template', {
+      imgDims: JSON.parse(template.imgDims),
+    });
   }
 
   handleDisconnect(socket: Socket) {
@@ -80,18 +94,17 @@ export class AppGateway
     socket.disconnect();
   }
 
+  /**
+   * Подписка на событие получения данных для опеределения точек по зараннее выбранному шаблону
+   * Пользователю возвращается событие client/detection с data: hints - Array | Object
+   */
   @SubscribeMessage('server/detection')
-  async handleDataTensor(
-    socket: Socket,
-    dataString: string,
-  ): Promise<WsResponse<any>> {
-    const data = JSON.parse(dataString);
-
+  async handleDataTensor(socket: Socket, data: any): Promise<WsResponse<any>> {
     const hints = await this.hintsService.generateHints(data, socket.id);
 
     return {
       event: 'client/detection',
-      data: JSON.stringify(hints),
+      data: hints,
     };
   }
 }

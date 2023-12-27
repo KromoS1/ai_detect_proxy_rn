@@ -37,12 +37,12 @@ export class HintsService {
     );
 
     if (!template) {
-      return false;
+      return null;
     }
 
     this.setClientTemplate(client_id, template.dataValues);
 
-    return true;
+    return template;
   }
 
   async getDetectedData(data) {
