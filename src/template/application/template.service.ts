@@ -26,10 +26,11 @@ export class TemplateService {
     const buffer = await this.filesService.getBuffer(file_path);
     const data_detection = await this.fdService.templateDetection(buffer);
 
-    const { positions, shift, imgDims } = this.landmarksService.getLandmarksData(
-      type.toUpperCase() as VariantsTemplateType,
-      data_detection,
-    );
+    const { positions, shift, imgDims } =
+      this.landmarksService.getLandmarksData(
+        type.toUpperCase() as VariantsTemplateType,
+        data_detection,
+      );
 
     const template: ITemplateService = {
       type,
@@ -48,7 +49,9 @@ export class TemplateService {
   }
 
   async getListTemplates(variant) {
-    const list = this.filesService.listFilesByPath(`./assets/template/${variant}`);
+    const list = this.filesService.listFilesByPath(
+      `./assets/template/${variant}`,
+    );
 
     if (list.length) {
       return list.map((fileName, i) => ({

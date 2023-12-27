@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { WsException } from '@nestjs/websockets';
-import { Transform } from 'class-transformer';
+
+import { HintsFactory } from './hints.factory';
 
 import { FaceDetectorService } from 'src/face-detector/application/face-detector.service';
 import { LandmarksService } from 'src/face-detector/application/landmarks.service';
@@ -11,16 +11,27 @@ import { Template } from 'src/template/domain/entity/template.model';
 
 @Injectable()
 export class HintsService {
-  template: Template | null = null;
+  client_template: { [key: string]: Template } = {};
+  factory: HintsFactory;
 
   constructor(
     private fdService: FaceDetectorService,
     private landmarksService: LandmarksService,
     private filesService: FilesService,
     private templateService: TemplateService,
-  ) {}
+  ) {
+    this.factory = new HintsFactory();
+  }
 
-  async loadTemplate(template_id: number) {
+  setClientTemplate(client_id: string, template: Template) {
+    this.client_template[client_id] = template;
+  }
+
+  removeClientTemplate(client_id: string) {
+    delete this.client_template[client_id];
+  }
+
+  async loadTemplate(template_id: number, client_id: string) {
     const template = await this.templateService.getDataTemplateById(
       template_id,
     );
@@ -29,7 +40,7 @@ export class HintsService {
       return false;
     }
 
-    this.template = template;
+    this.setClientTemplate(client_id, template.dataValues);
 
     return true;
   }
@@ -43,67 +54,25 @@ export class HintsService {
     return await this.fdService.templateDetection(buffer);
   }
 
-  async getPositions(template: Template, data) {}
-
-  async generateHints(data) {
+  async generateHints(data, client_id: string) {
     const detectData = await this.getDetectedData(data);
 
     if (!detectData) return [];
 
-    // const { positions } = this.landmarksService.getLandmarksData(
-    //   template.type.toUpperCase() as VariantsTemplateType,
-    //   detectData,
-    // );
+    const variantTemplate = this.client_template[
+      client_id
+    ].type.toUpperCase() as VariantsTemplateType;
+
+    const { positions } = this.landmarksService.getLandmarksData(
+      variantTemplate,
+      detectData,
+    );
+
+    const hints = this.factory.createHints(variantTemplate);
+
+    return hints.generate(
+      positions,
+      JSON.parse(this.client_template[client_id].positions),
+    );
   }
 }
-
-// defineHints(positions, positionTemplate) {
-//   const hints = [];
-
-//   console.log(positions);
-//   console.log(positionTemplate);
-
-//   for (let i = 0; i < positions.length; i++) {
-//     const { x: tx, y: ty } = positionTemplate[i];
-//     const { x, y } = positions[i];
-
-//     const distance = 300;
-
-//     // console.log('плюс x ', x, ' tx ', tx + 250);
-//     // console.log('минус x ', x, ' tx ', tx - 250);
-//     // console.log('плюс y ', y, ' ty ', ty + 150);
-//     // console.log('минус y ', y, ' ty ', ty - 150);
-
-//     if (
-//       tx < x + distance &&
-//       tx > x - distance &&
-//       ty < y + distance &&
-//       ty > y - distance
-//     ) {
-//       hints.push('ok');
-//       continue;
-//     }
-
-//     if (tx > x + distance) {
-//       hints.push('right');
-//     } else if (tx < x - distance) {
-//       hints.push('left');
-//     }
-
-//     if (ty > y + distance) {
-//       hints.push('up');
-//     } else if (ty < y - distance) {
-//       hints.push('down');
-//     }
-//   }
-
-//   return hints;
-// }
-
-// countValues(arr) {
-//   return arr.reduce((count, value) => {
-//     count[value] = (count[value] || 0) + 1;
-
-//     return count;
-//   }, {});
-// }

@@ -25,8 +25,6 @@ export class SocketService {
           email as string,
         );
 
-        console.log(user);
-
         if (user) {
           next();
         } else {

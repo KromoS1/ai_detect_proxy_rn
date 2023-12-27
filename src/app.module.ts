@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ScheduleModule } from '@nestjs/schedule';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { ThrottlerModule } from '@nestjs/throttler';
 
@@ -48,6 +49,7 @@ import { UserModule } from './user/user.module';
     UserModule,
     FilesModule,
     HintsModule,
+    ScheduleModule.forRoot(),
   ],
 })
 export class AppModule {}
