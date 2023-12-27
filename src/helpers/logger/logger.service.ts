@@ -12,6 +12,8 @@ export class KromLogger extends ConsoleLogger {
       warn: new LoggerFile(LoggerFile.nameFiles.warn),
       error: new LoggerFile(LoggerFile.nameFiles.error),
       message: new LoggerFile(LoggerFile.nameFiles.message),
+      socket: new LoggerFile(LoggerFile.nameFiles.socket),
+      socket_error: new LoggerFile(LoggerFile.nameFiles.socket_error),
     };
   }
 
@@ -26,10 +28,23 @@ export class KromLogger extends ConsoleLogger {
   }
 
   error(message: any, stack?: string, context?: string): void {
-    // const log = `[${context}] --- ${message as string}\n${stack}`;
     this.filesLoggers.error.writeFile(`${stack}`);
 
     super.error(message, stack, context);
+  }
+
+  socket(type: 'log' | 'error', message: string, client_id?: string): void {
+    const logger =
+      type === 'log'
+        ? this.filesLoggers.socket
+        : this.filesLoggers.socket_error;
+
+    const mess = client_id
+      ? `[Client_id: ${client_id}] --- ${message}`
+      : message;
+
+    logger.writeFile(mess);
+    super.log(mess);
   }
 
   writeLog(nameFile: NamesKeyFileType, message: unknown, context?: unknown) {

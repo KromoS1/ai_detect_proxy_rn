@@ -12,6 +12,7 @@ import { Server, Socket } from 'socket.io';
 
 import { SocketService } from './application/socket.service';
 
+import { KromLogger } from 'src/helpers/logger/logger.service';
 import { HintsService } from 'src/hints/application/hints.service';
 
 @WebSocketGateway({
@@ -28,19 +29,18 @@ export class AppGateway
   constructor(
     private hintsService: HintsService,
     private socketService: SocketService,
+    private kromLogger: KromLogger,
   ) {}
 
   afterInit(server: Server) {
     const middleware = this.socketService.socketMiddleware();
 
     server.use(middleware);
-    this.logger.log(`${AppGateway.name} initialized`);
+    this.kromLogger.socket('log', `${AppGateway.name} initialized`);
   }
 
   async handleConnection(socket: Socket, ...args: any[]) {
-    this.logger.warn(`open Client_id: ${socket.id}`);
-
-    const { template_id } = socket.handshake.query;
+    const { template_id, user_id } = socket.handshake.query;
 
     const isLoad = await this.hintsService.loadTemplate(
       +template_id as number,
@@ -48,9 +48,19 @@ export class AppGateway
     );
 
     if (!isLoad) {
-      this.logger.error(`close Client_id: ${socket.id} - invalid template_id`);
+      this.kromLogger.socket(
+        'error',
+        `invalid template_id = ${template_id}`,
+        socket.id,
+      );
       this.disconnectSocket(socket);
     }
+
+    this.kromLogger.socket(
+      'log',
+      `Open connection: user_id = ${user_id}, template_id = ${template_id}`,
+      socket.id,
+    );
   }
 
   handleDisconnect(socket: Socket) {

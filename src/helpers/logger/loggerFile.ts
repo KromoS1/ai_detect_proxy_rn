@@ -8,6 +8,8 @@ type NamesFileType = {
   warn: 'warn';
   error: 'error';
   message: 'message';
+  socket: 'socket';
+  socket_error: 'socket_error';
 };
 
 export type NamesKeyFileType = NamesFileType[keyof NamesFileType];
@@ -19,6 +21,8 @@ export class LoggerFile {
     warn: 'warn',
     error: 'error',
     message: 'message',
+    socket: 'socket',
+    socket_error: 'socket_error',
   };
 
   private formatTime = 'DD-MM-YYYY HH:mm:SS';
@@ -47,25 +51,33 @@ export class LoggerFile {
 
   private openFile = (nameFile: NamesKeyFileType) => {
     fs.open(`./logs/${this.dirDate}/${nameFile}.log`, 'r+', (err: Error) => {
-      if (err) this.logger.log(err);
+      // if (err) this.logger.error(err);
     });
   };
 
   private appendFile = (nameFile: NamesKeyFileType, message: string) => {
-    fs.appendFile(`logs/${this.dirDate}/${nameFile}.log`, message, (err: Error) => {
-      if (err) this.logger.log(err);
-    });
+    fs.appendFile(
+      `logs/${this.dirDate}/${nameFile}.log`,
+      message,
+      (err: Error) => {
+        // if (err) this.logger.error(err);
+      },
+    );
   };
 
   writeFile = (message: string) => {
-    fs.readFile(`./logs/${this.dirDate}/${this.name_file_log}.log`, 'utf-8', (err: Error) => {
-      if (err) {
-        this.openFile(this.name_file_log);
-      }
+    fs.readFile(
+      `./logs/${this.dirDate}/${this.name_file_log}.log`,
+      'utf-8',
+      (err: Error) => {
+        if (err) {
+          this.openFile(this.name_file_log);
+        }
 
-      const updateMessage = `[${this.nowTime}]\n${message}\n\n`;
+        const updateMessage = `[${this.nowTime}]\n${message}\n\n`;
 
-      this.appendFile(this.name_file_log, updateMessage);
-    });
+        this.appendFile(this.name_file_log, updateMessage);
+      },
+    );
   };
 }
