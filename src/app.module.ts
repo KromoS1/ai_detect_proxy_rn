@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
 import { SequelizeModule } from '@nestjs/sequelize';
@@ -8,6 +8,7 @@ import { FaceDetectorModule } from './face-detector/face-detector.module';
 import { GatewayModule } from './gateway/gateway.module';
 import { FilesModule } from './helpers/files/files.module';
 import { LoggerModule } from './helpers/logger/logger.module';
+import { LoggerMiddleware } from './helpers/middlewar/query.logger';
 import { CronTasksService } from './helpers/scheduler/cron-tasks.service';
 import { HintsModule } from './hints/hints.module';
 import { Template } from './template/domain/entity/template.model';
@@ -52,4 +53,8 @@ import { UserModule } from './user/user.module';
     ScheduleModule.forRoot(),
   ],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggerMiddleware).forRoutes('*');
+  }
+}

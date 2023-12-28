@@ -52,6 +52,12 @@ export class AppGateway
   async handleConnection(socket: Socket, ...args: any[]) {
     const { template_id, user_id } = socket.handshake.query;
 
+    this.kromLogger.socket(
+      'log',
+      `Open: user_id = ${user_id}, template_id = ${template_id}`,
+      socket.id,
+    );
+
     const template = await this.hintsService.loadTemplate(
       +template_id as number,
       socket.id,
@@ -65,12 +71,6 @@ export class AppGateway
       );
       this.disconnectSocket(socket);
     }
-
-    this.kromLogger.socket(
-      'log',
-      `Open: user_id = ${user_id}, template_id = ${template_id}`,
-      socket.id,
-    );
 
     socket.emit('client/data_template', {
       imgDims: JSON.parse(template.imgDims),
@@ -100,6 +100,8 @@ export class AppGateway
    */
   @SubscribeMessage('server/detection')
   async handleDataTensor(socket: Socket, data: any): Promise<WsResponse<any>> {
+    // const data = JSON.parse(dataString);
+
     const hints = await this.hintsService.generateHints(data, socket.id);
 
     return {

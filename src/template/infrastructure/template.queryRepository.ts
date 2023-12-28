@@ -14,4 +14,10 @@ export class TemplateQueryRepository {
       where: { template_id },
     });
   }
+
+  async getListTemplateByNames(names: string[]) {
+    return await this.templateQueryRepository.findAll({
+      where: { file_name: names },
+    });
+  }
 }

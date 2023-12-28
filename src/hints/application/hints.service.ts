@@ -32,17 +32,21 @@ export class HintsService {
   }
 
   async loadTemplate(template_id: number, client_id: string) {
-    const template = await this.templateService.getDataTemplateById(
-      template_id,
-    );
+    try {
+      const template = await this.templateService.getDataTemplateById(
+        template_id,
+      );
 
-    if (!template) {
-      return null;
+      if (!template) {
+        return null;
+      }
+
+      this.setClientTemplate(client_id, template.dataValues);
+
+      return template;
+    } catch (error) {
+      console.error(error);
     }
-
-    this.setClientTemplate(client_id, template.dataValues);
-
-    return template;
   }
 
   async getDetectedData(data) {

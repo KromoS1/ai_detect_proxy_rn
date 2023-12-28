@@ -54,9 +54,12 @@ export class TemplateService {
     );
 
     if (list.length) {
-      return list.map((fileName, i) => ({
-        id: i,
-        link: `${process.env.HTTP_PATH}/${variant}/${fileName}`,
+      const templates =
+        await this.templateQueryRepository.getListTemplateByNames(list);
+
+      return templates.map((tmpl) => ({
+        template_id: tmpl.template_id,
+        link: `${process.env.HTTP_PATH}/${variant}/${tmpl.file_name}`,
       }));
     }
 
