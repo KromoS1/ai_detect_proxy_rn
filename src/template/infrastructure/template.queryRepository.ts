@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { Template } from '../domain/entity/template.model';
 import { InjectModel } from '@nestjs/sequelize';
+
+import { Template } from '../domain/entity/template.model';
 
 @Injectable()
 export class TemplateQueryRepository {
@@ -11,6 +12,12 @@ export class TemplateQueryRepository {
   async getTemplateById(template_id: number) {
     return await this.templateQueryRepository.findOne({
       where: { template_id },
+    });
+  }
+
+  async getListTemplateByNames(names: string[]) {
+    return await this.templateQueryRepository.findAll({
+      where: { file_name: names },
     });
   }
 }

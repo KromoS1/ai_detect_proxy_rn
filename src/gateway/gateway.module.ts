@@ -1,10 +1,15 @@
 import { Module } from '@nestjs/common';
+
 import { AppGateway } from './app.gateway';
-import { FaceDetectorModule } from 'src/face-detector/face-detector.module';
+import { SocketService } from './application/socket.service';
+
+import { LoggerModule } from 'src/helpers/logger/logger.module';
+import { HintsModule } from 'src/hints/hints.module';
+import { UserModule } from 'src/user/user.module';
 
 @Module({
-  imports: [FaceDetectorModule],
-  providers: [AppGateway],
+  imports: [HintsModule, UserModule, LoggerModule],
+  providers: [AppGateway, SocketService],
   exports: [AppGateway],
 })
 export class GatewayModule {}

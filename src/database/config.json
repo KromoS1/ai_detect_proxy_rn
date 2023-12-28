@@ -1,0 +1,18 @@
+{
+  "development": {
+    "dialect": "mysql",
+    "username": "kromos",
+    "password": "1234",
+    "database": "test_database",
+    "host": "localhost",
+    "port": 3307
+  },
+  "test": {
+    "dialect": "mysql",
+    "username": "admin23215_fapplication",
+    "password": "z2K*a6E,j1",
+    "database": "baza23215_fapplication",
+    "host": "localhost",
+    "port": 3306
+  }
+}

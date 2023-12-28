@@ -1,14 +1,15 @@
 import {
   BadRequestException,
   Controller,
+  Delete,
   Get,
   HttpCode,
+  Param,
   Post,
   Query,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
-import { TemplateService } from '../application/template.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import {
   ApiBody,
@@ -17,10 +18,15 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { AddTemplateQueryDto } from '../domain/dto/template.request.dto';
-import { TemplateResponseDto } from '../domain/dto/template.response.dto';
-import { promises as fsPromises } from 'fs';
 
+import { TemplateService } from '../application/template.service';
+import {
+  AddTemplateQueryDto,
+  TemplateParamDto,
+} from '../domain/dto/template.request.dto';
+import { TemplateResponseDto } from '../domain/dto/template.response.dto';
+
+import { BadRequestResult } from 'src/helpers/exception/badRequestResult';
 @ApiTags('Шаблоны')
 @Controller('template')
 export class TemplateController {
@@ -44,6 +50,11 @@ export class TemplateController {
     type: TemplateResponseDto,
     description: 'Успешное добавление шаблона',
   })
+  @ApiResponse({
+    status: 400,
+    type: BadRequestResult,
+    description: 'Ошибка добавления шаблона',
+  })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
@@ -66,23 +77,52 @@ export class TemplateController {
   ) {
     if (!queryDo.tmpl) {
       throw new BadRequestException({
-        message: 'Вы не указали query parameter -> tmpl',
+        message: 'Вы не указали query parameter',
+        fields: ['tmpl'],
       });
     }
-    const buffer = await fsPromises.readFile(file.path);
 
     const result = await this.templateService.detectNewTemplate(
       file.originalname,
       file.path,
-      buffer,
+      queryDo.tmpl,
     );
 
     if (!result) {
       throw new BadRequestException({
-        message: 'Ошибка при добавлении шаблона',
+        message: 'Ошибка при добавлении шаблона.',
+        fields: ['filename'],
       });
     }
 
     return { message: 'Шаблон успешно добавлен' };
+  }
+
+  @ApiOperation({ summary: 'Удалить шаблон' })
+  @ApiResponse({
+    status: 200,
+    type: '',
+    description: 'Успешное удаление шаблона',
+  })
+  @ApiResponse({
+    status: 400,
+    type: BadRequestResult,
+    description: 'Ошибка удаления шаблона',
+  })
+  @HttpCode(200)
+  @Delete(':template_id')
+  async removeTemplate(@Param() paramDto: TemplateParamDto) {
+    const template = await this.templateService.getDataTemplateById(
+      paramDto.template_id,
+    );
+
+    if (!template) {
+      throw new BadRequestException({
+        message: 'Шаблон не найден',
+        fields: ['template_id'],
+      });
+    }
+
+    return await this.templateService.removeTemplate(template);
   }
 }

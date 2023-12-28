@@ -1,12 +1,15 @@
+import * as fs from 'fs';
+
 import { Injectable, Logger } from '@nestjs/common';
 import * as moment from 'moment';
-import * as fs from 'fs';
 
 type NamesFileType = {
   log: 'log';
   warn: 'warn';
   error: 'error';
   message: 'message';
+  socket: 'socket';
+  socket_error: 'socket_error';
 };
 
 export type NamesKeyFileType = NamesFileType[keyof NamesFileType];
@@ -18,6 +21,8 @@ export class LoggerFile {
     warn: 'warn',
     error: 'error',
     message: 'message',
+    socket: 'socket',
+    socket_error: 'socket_error',
   };
 
   private formatTime = 'DD-MM-YYYY HH:mm:SS';
@@ -46,7 +51,7 @@ export class LoggerFile {
 
   private openFile = (nameFile: NamesKeyFileType) => {
     fs.open(`./logs/${this.dirDate}/${nameFile}.log`, 'r+', (err: Error) => {
-      if (err) this.logger.log(err);
+      // if (err) this.logger.error(err);
     });
   };
 
@@ -55,7 +60,7 @@ export class LoggerFile {
       `logs/${this.dirDate}/${nameFile}.log`,
       message,
       (err: Error) => {
-        if (err) this.logger.log(err);
+        // if (err) this.logger.error(err);
       },
     );
   };

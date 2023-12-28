@@ -1,16 +1,23 @@
-import { Module } from '@nestjs/common';
-import { GatewayModule } from './gateway/gateway.module';
-import { FaceDetectorModule } from './face-detector/face-detector.module';
-import { TemplateModule } from './template/template.module';
-import { LoggerModule } from './logger/logger.module';
-import { ThrottlerModule } from '@nestjs/throttler';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ScheduleModule } from '@nestjs/schedule';
 import { SequelizeModule } from '@nestjs/sequelize';
+import { ThrottlerModule } from '@nestjs/throttler';
+
+import { FaceDetectorModule } from './face-detector/face-detector.module';
+import { GatewayModule } from './gateway/gateway.module';
+import { FilesModule } from './helpers/files/files.module';
+import { LoggerModule } from './helpers/logger/logger.module';
+import { LoggerMiddleware } from './helpers/middlewar/query.logger';
+import { CronTasksService } from './helpers/scheduler/cron-tasks.service';
+import { HintsModule } from './hints/hints.module';
 import { Template } from './template/domain/entity/template.model';
-import { UserModule } from './user/user.module';
+import { TemplateModule } from './template/template.module';
 import { User } from './user/domain/entity/user.model';
+import { UserModule } from './user/user.module';
 
 @Module({
+  providers: [CronTasksService],
   imports: [
     ConfigModule.forRoot({
       envFilePath: `.${process.env.NODE_ENV}.env`,
@@ -34,12 +41,20 @@ import { User } from './user/domain/entity/user.model';
       models: [Template, User],
       logging: false,
       retryAttempts: 5,
+      autoLoadModels: true,
     }),
     GatewayModule,
     FaceDetectorModule,
     TemplateModule,
     LoggerModule,
     UserModule,
+    FilesModule,
+    HintsModule,
+    ScheduleModule.forRoot(),
   ],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggerMiddleware).forRoutes('*');
+  }
+}

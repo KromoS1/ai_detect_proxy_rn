@@ -14,3 +14,18 @@ services:
     ports:
       - '3307:3306'
     restart: always
+
+  # server:
+  #   build:
+  #     context: .
+  #     dockerfile: ./config/prod/docker/main.Dockerfile
+  #   env_file:
+  #     - .development.env
+  #   volumes:
+  #     - .:/var/www/ay_detect_proxy_rn
+  #     - /var/www/ay_detect_proxy_rn/node_modules
+  #   ports:
+  #     - '5005:5000'
+  #     - '9229:9229'
+  #   command: yarn start
+  #   restart: always
