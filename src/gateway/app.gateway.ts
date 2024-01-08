@@ -1,4 +1,3 @@
-import { Logger } from '@nestjs/common';
 import {
   OnGatewayConnection,
   OnGatewayDisconnect,
@@ -23,8 +22,6 @@ export class AppGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
   @WebSocketServer() wss: Server;
-
-  private logger: Logger = new Logger('GATEWAY');
 
   constructor(
     private hintsService: HintsService,
@@ -100,10 +97,10 @@ export class AppGateway
    */
   @SubscribeMessage('server/detection')
   async handleDataTensor(socket: Socket, data: any): Promise<WsResponse<any>> {
-    // const data = JSON.parse(dataString);
-
     const hints = await this.hintsService.generateHints(data, socket.id);
-// console.log(hints)
+
+    console.log(hints);
+
     return {
       event: 'client/detection',
       data: hints,
