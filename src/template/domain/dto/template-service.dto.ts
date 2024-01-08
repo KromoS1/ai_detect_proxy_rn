@@ -49,6 +49,9 @@ export interface ITemplateService {
 
   type: string;
   imgDims: string;
-  shift: string;
+  roll: number;
+  pitch: number;
+  yaw: number;
+  rect: string
   positions: string;
 }

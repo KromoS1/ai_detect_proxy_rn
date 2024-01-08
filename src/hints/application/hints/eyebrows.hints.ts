@@ -5,22 +5,37 @@ import { ShiftDto } from 'src/face-detector/domain/dto/detection.dto';
 export class EyebrowsHints extends Hints implements IHints {
   distance: number = 300;
 
+  updateDirection(hints) {
+
+    if(hints['left'] && hints['right']) {
+
+      hints['left'] > hints['right'] ? delete hints['right'] : delete hints['left']
+    } 
+    
+    if(hints['up'] && hints['down']) {
+
+      hints['up'] > hints['down'] ? delete hints['down'] : delete hints['up']
+    } 
+
+    return hints
+  }
+
   defineHints(hintsCount) {
     const { ok, ...resthint } = hintsCount;
 
     if (!ok) return Object.keys(resthint);
+  
+    const hints = this.updateDirection(resthint)
 
     const res = [];
 
-    Object.entries(resthint).forEach((h) =>
-      ok >= h[1] ? res.push(h[0]) : undefined,
-    );
+    Object.entries(hints).forEach((h) => ok <= h[1] ? res.push(h[0]) : undefined);
 
     if (res.length) return res;
 
     return ['ok'];
   }
-  //TODO: сделать расчет наоборот, пройтись по точкам двух массивов и отнять значения, после результрующий массив сравивать с distance и генерить подсказки
+ 
   defineHintsEachPoint(positions: ShiftDto[], positionTemplate: ShiftDto[]) {
     const hintsShift = [];
 
@@ -55,23 +70,15 @@ export class EyebrowsHints extends Hints implements IHints {
   }
 
   generate(positions: ShiftDto[], positionTemplate: ShiftDto[]) {
-    const leftEyebrows = this.defineHintsEachPoint(
-      positions.slice(0, 5),
-      positionTemplate.slice(0, 5),
+    const hintsEyebrows = this.defineHintsEachPoint(
+      positions,
+      positionTemplate,
     );
-    const rightEyebrows = this.defineHintsEachPoint(
-      positions.slice(5, 10),
-      positionTemplate.slice(5, 10),
-    );
+    
+    const updateHints = this.countValuesHints(hintsEyebrows);
+    
+    const hints = this.defineHints(updateHints);
 
-    const leftHints = this.countValuesHints(leftEyebrows);
-    const rightHints = this.countValuesHints(rightEyebrows);
-
-    const resultHints = {
-      left: this.defineHints(leftHints),
-      right: this.defineHints(rightHints),
-    };
-
-    return resultHints;
+    return hints;
   }
 }

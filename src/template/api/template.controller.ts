@@ -38,7 +38,7 @@ export class TemplateController {
     type: [String],
     description: 'Успешная получение списка шаблонов',
   })
-  @HttpCode(201)
+  @HttpCode(200)
   @Get('/list')
   async getListTemplates(@Query('variant') variant: string) {
     return await this.templateService.getListTemplates(variant);

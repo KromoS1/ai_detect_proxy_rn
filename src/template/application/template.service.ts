@@ -1,6 +1,6 @@
 import * as process from 'process';
 
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 
 import { ITemplateService } from '../domain/dto/template-service.dto';
 import { Template } from '../domain/entity/template.model';
@@ -26,7 +26,14 @@ export class TemplateService {
     const buffer = await this.filesService.getBuffer(file_path);
     const data_detection = await this.fdService.templateDetection(buffer);
 
-    const { positions, shift, imgDims } =
+    if(!data_detection) {
+      throw new BadRequestException({
+        message: 'Ошибка при добавлении шаблона (Слишком близкое фото).',
+        fields: ['image'],
+      });
+    };
+
+    const { positions, angle, imgDims, rect } =
       this.landmarksService.getLandmarksData(
         type.toUpperCase() as VariantsTemplateType,
         data_detection,
@@ -36,8 +43,9 @@ export class TemplateService {
       type,
       file_name,
       file_path,
+      ...angle,
       imgDims: JSON.stringify(imgDims),
-      shift: JSON.stringify(shift),
+      rect: JSON.stringify(rect),
       positions: JSON.stringify(positions),
     };
 

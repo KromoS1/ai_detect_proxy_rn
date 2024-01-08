@@ -30,6 +30,8 @@ export class FaceDetectorService {
 
     await faceapi.nets.ssdMobilenetv1.loadFromDisk(modelPath);
     await faceapi.nets.faceLandmark68Net.loadFromDisk(modelPath);
+    await faceapi.nets.faceExpressionNet.loadFromDisk(modelPath);
+    await faceapi.nets.faceRecognitionNet.loadFromDisk(modelPath);
 
     this.optionsSSDMobileNet = new faceapi.SsdMobilenetv1Options({
       minConfidence,

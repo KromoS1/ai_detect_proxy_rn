@@ -63,20 +63,22 @@ export class HintsService {
 
     if (!detectData) return [];
 
-    const variantTemplate = this.client_template[
-      client_id
-    ].type.toUpperCase() as VariantsTemplateType;
+    //@ts-ignore
+    // console.log(detectData)
 
-    const { positions } = this.landmarksService.getLandmarksData(
-      variantTemplate,
-      detectData,
-    );
+    const {type, positions: tPositions, roll, pitch, rect: tRect} = this.client_template[client_id];
+
+    const variantTemplate = type.toUpperCase() as VariantsTemplateType;
+
+    const { positions, angle, rect } = this.landmarksService.getLandmarksData(variantTemplate, detectData);
 
     const hints = this.factory.createHints(variantTemplate);
 
-    return hints.generate(
-      positions,
-      JSON.parse(this.client_template[client_id].positions),
-    );
+    return {
+      roll: hints.defineRoll(angle.roll, roll),
+      pitch: hints.definePitch(angle.pitch, pitch),
+      positions: hints.generate(positions, JSON.parse(tPositions)),
+      zoom: hints.defineZoom(rect, JSON.parse(tRect))
+    }
   }
 }

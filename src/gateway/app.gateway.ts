@@ -103,7 +103,7 @@ export class AppGateway
     // const data = JSON.parse(dataString);
 
     const hints = await this.hintsService.generateHints(data, socket.id);
-
+// console.log(hints)
     return {
       event: 'client/detection',
       data: hints,
