@@ -26,12 +26,12 @@ export class TemplateService {
     const buffer = await this.filesService.getBuffer(file_path);
     const data_detection = await this.fdService.templateDetection(buffer);
 
-    if(!data_detection) {
+    if (!data_detection) {
       throw new BadRequestException({
         message: 'Ошибка при добавлении шаблона (Слишком близкое фото).',
         fields: ['image'],
       });
-    };
+    }
 
     const { positions, angle, imgDims, rect } =
       this.landmarksService.getLandmarksData(

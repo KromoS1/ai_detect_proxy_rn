@@ -99,7 +99,7 @@ export class AppGateway
   async handleDataTensor(socket: Socket, data: any): Promise<WsResponse<any>> {
     const hints = await this.hintsService.generateHints(data, socket.id);
 
-    console.log(hints);
+    // console.log(hints);
 
     return {
       event: 'client/detection',

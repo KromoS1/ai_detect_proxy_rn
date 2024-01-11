@@ -13,7 +13,7 @@ export class LandmarksService {
   getLandmarksData(type: VariantsTemplateType, detectionData) {
     const angle = this.getAngle(detectionData);
     const positions = this.getPosition(type, detectionData.landmarks.positions);
-    const rect = this.getRect(detectionData)
+    const rect = this.getRect(detectionData);
     const imgDims = this.getImgDims(detectionData);
 
     return { angle, positions, imgDims, rect };
@@ -46,7 +46,7 @@ export class LandmarksService {
     return { width: _width, height: _height } as Dims;
   }
 
-  getRect(detectData) :Dims {
+  getRect(detectData): Dims {
     const { _width, _height } = detectData.alignedRect._box;
 
     return { width: Math.ceil(_width), height: Math.ceil(_height) } as Dims;

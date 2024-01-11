@@ -61,7 +61,7 @@ export class HintsService {
   async generateHints(data, client_id: string) {
     const detectData = await this.#getDetectedData(data);
 
-    if (!detectData) return [];
+    if (!detectData) return null;
 
     const {
       type,
@@ -78,6 +78,17 @@ export class HintsService {
       variantTemplate,
       detectData,
     );
+
+    // console.table([
+    //   {
+    //     roll: angle.roll,
+    //     tRoll: roll,
+    //     pitch: angle.pitch,
+    //     tPitch: pitch,
+    //     yaw: angle.yaw,
+    //     tYaw: yaw,
+    //   },
+    // ]);
 
     return {
       roll: this.commonHints.getHints(angle.roll, roll, 'ROLL'), // определение наклона головы влево-вправо
