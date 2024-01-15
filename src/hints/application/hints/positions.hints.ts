@@ -2,7 +2,7 @@ import { ShiftDto } from 'src/face-detector/domain/dto/detection.dto';
 import { Difference, IHints } from 'src/hints/domain/dto/hints.service.dto';
 
 export class PositionsHints implements IHints {
-  #countValuesHints(arr) {
+  _countValuesHints(arr) {
     return arr.reduce((count, value) => {
       count[value] = (count[value] || 0) + 1;
 
@@ -10,26 +10,34 @@ export class PositionsHints implements IHints {
     }, {});
   }
 
-  #updateDirection(hints) {
+  _updateDirection(hints) {
     if (hints['left'] && hints['right']) {
-      hints['left'] > hints['right']
-        ? delete hints['right']
-        : delete hints['left'];
+      if (hints['left'] == hints['right']) {
+        delete hints['right'];
+      } else {
+        hints['left'] > hints['right']
+          ? delete hints['right']
+          : delete hints['left'];
+      }
     }
 
     if (hints['up'] && hints['down']) {
-      hints['up'] > hints['down'] ? delete hints['down'] : delete hints['up'];
+      if (hints['up'] == hints['down']) {
+        delete hints['down'];
+      } else {
+        hints['up'] > hints['down'] ? delete hints['down'] : delete hints['up'];
+      }
     }
 
     return hints;
   }
 
-  #defineHints(hintsCount) {
-    const { ok, ...resthint } = hintsCount;
+  _defineHints(hintsCount) {
+    const { ok, ...restHint } = hintsCount;
 
-    if (!ok) return Object.keys(resthint);
+    const hints = this._updateDirection(restHint);
 
-    const hints = this.#updateDirection(resthint);
+    if (!ok) return Object.keys(hints);
 
     const res = [];
 
@@ -42,7 +50,7 @@ export class PositionsHints implements IHints {
     return ['ok'];
   }
 
-  #defineHintsEachPoint(positions: ShiftDto[], positionTemplate: ShiftDto[]) {
+  _defineHintsEachPoint(positions: ShiftDto[], positionTemplate: ShiftDto[]) {
     const hintsShift = [];
 
     for (let i = 0; i < positions.length; i++) {
@@ -76,14 +84,16 @@ export class PositionsHints implements IHints {
   }
 
   generate(positions: ShiftDto[], positionTemplate: ShiftDto[]) {
-    const hintsEyebrows = this.#defineHintsEachPoint(
+    const hintsPosition = this._defineHintsEachPoint(
       positions,
       positionTemplate,
     );
 
-    const updateHints = this.#countValuesHints(hintsEyebrows);
+    const updateHints = this._countValuesHints(hintsPosition);
 
-    const hints = this.#defineHints(updateHints);
+    const hints = this._defineHints(updateHints);
+
+    console.log(hints);
 
     return hints;
   }
