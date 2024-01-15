@@ -6,7 +6,9 @@ import { Template } from '../domain/entity/template.model';
 
 @Injectable()
 export class TemplateRepository {
-  constructor(@InjectModel(Template) private templateRepository: typeof Template) {}
+  constructor(
+    @InjectModel(Template) private templateRepository: typeof Template,
+  ) {}
 
   async addDataTemplate(templateDto: ITemplateService) {
     try {

@@ -11,7 +11,9 @@ import { KromLogger } from './helpers/logger/logger.service';
 async function bootstrap() {
   const PORT = process.env.PORT || 5000;
 
-  const nestFactory = await NestFactory.create<NestExpressApplication>(AppModule);
+  const nestFactory = await NestFactory.create<NestExpressApplication>(
+    AppModule,
+  );
 
   nestFactory.useStaticAssets(join(__dirname, '..', 'assets', 'template'));
   nestFactory.useStaticAssets(join(__dirname, '..', 'assets', 'docs'));
