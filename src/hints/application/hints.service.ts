@@ -91,14 +91,17 @@ export class HintsService {
     // ]);
 
     return {
-      roll: this.commonHints.getHints(angle.roll, roll, 'ROLL'), // определение наклона головы влево-вправо
-      pitch: this.commonHints.getHints(angle.pitch, pitch, 'PITCH'), // определение наклона головы вперед-назад
-      yaw: this.commonHints.getHints(angle.yaw, yaw, 'YAW'), //определение поворота головы влево-вправо
-      positions: this.positionsHints.generate(
-        positions,
-        JSON.parse(tPositions),
-      ), //определение позиции лица
-      zoom: this.commonHints.getZoom(rect, JSON.parse(tRect)), // Определение зума по площади квадрата головы
+      positionsTemp: tPositions,
+      hints: {
+        roll: this.commonHints.getHints(angle.roll, roll, 'ROLL'), // определение наклона головы влево-вправо
+        pitch: this.commonHints.getHints(angle.pitch, pitch, 'PITCH'), // определение наклона головы вперед-назад
+        yaw: this.commonHints.getHints(angle.yaw, yaw, 'YAW'), //определение поворота головы влево-вправо
+        positions: this.positionsHints.generate(
+          positions,
+          JSON.parse(tPositions),
+        ), //определение позиции лица
+        zoom: this.commonHints.getZoom(rect, JSON.parse(tRect)), // Определение зума по площади квадрата головы
+      },
     };
   }
 }

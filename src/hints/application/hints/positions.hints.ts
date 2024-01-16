@@ -93,8 +93,6 @@ export class PositionsHints implements IHints {
 
     const hints = this._defineHints(updateHints);
 
-    console.log(hints);
-
     return hints;
   }
 }
