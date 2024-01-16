@@ -2,15 +2,11 @@ FROM node:20.10.0
 
 WORKDIR /var/www/ay_detect_proxy_rn
 
-COPY package*.json ./
+COPY . .
 
 RUN npm install node-gyp node-pre-gyp -g -f
 
-# RUN npm install --global npm@latest
-
 RUN yarn -f
-
-COPY . .
 
 RUN yarn build
 
