@@ -22,9 +22,9 @@ services:
     ports:
       - '5432:5432'
     environment:
-      DB_USER: 'user'
-      DB_PASSWORD: 'user_admin'
-      DB_NAME: 'fapplication'
+      DB_USER: user
+      DB_PASSWORD: user_admin
+      DB_NAME: fapplication
     volumes:
       - db_volume:/var/lib/postgresql/data
     restart: always
