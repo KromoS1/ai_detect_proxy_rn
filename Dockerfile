@@ -10,6 +10,4 @@ RUN bun i
 
 RUN bun run build 
 
-COPY ./dist ./dist
-
 CMD [ "bun", "start:dev" ]
