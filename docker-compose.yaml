@@ -4,12 +4,11 @@ services:
   server:
     build:
       context: .
-      dockerfile: ./config/prod/docker/main.Dockerfile
+      dockerfile: Dockerfile
     env_file:
       - .dev.env
     volumes:
       - .:/var/www/ay_detect_proxy_rn
-      - /var/www/ay_detect_proxy_rn/node_modules
     ports:
       - '5001:5001'
     command: yarn start:dev
