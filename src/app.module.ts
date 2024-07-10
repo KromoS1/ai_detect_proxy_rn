@@ -33,7 +33,7 @@ import { UserModule } from './user/user.module';
       }),
     }),
     SequelizeModule.forRoot({
-      dialect: 'mysql',
+      dialect: 'postgres',
       host: process.env.DB_HOST,
       port: Number(process.env.DB_PORT),
       username: process.env.DB_USER,
