@@ -12,6 +12,39 @@ services:
       - /var/www/ay_detect_proxy_rn/node_modules
     ports:
       - '5001:5001'
-      - '9229:9229'
     command: yarn start:dev
     restart: always
+
+  db:
+    container_name: db
+    image: postgres:16
+    ports:
+      - '5432:5432'
+    environment:
+      DB_USER: '${DB_USER}'
+      DB_PASSWORD: '${DB_PASSWORD}'
+      DB_NAME: '${DB_NAME}'
+    volumes:
+      - db_volume:/var/lib/postgresql/data
+    restart: always
+
+  caddy:
+    container_name: caddy
+    image: caddy:2.7.4
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config_data:/config
+    environment:
+      API_DOMAIN: '185.69.155.78'
+    depends_on:
+      - server
+    restart: always
+
+volumes:
+  caddy_data: {}
+  caddy_config_data: {}
+  db_volume: {}
