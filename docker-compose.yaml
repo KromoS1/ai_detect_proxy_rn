@@ -13,21 +13,6 @@ services:
       - '5001:5001'
     command: yarn start:dev
     restart: always
-    depends_on:
-      - db
-
-  db:
-    container_name: db
-    image: postgres:16
-    ports:
-      - '5432:5432'
-    environment:
-      DB_USER: user
-      DB_PASSWORD: user_admin
-      DB_NAME: fapplication
-    volumes:
-      - db_volume:/var/lib/postgresql/data
-    restart: always
 
   caddy:
     container_name: caddy
