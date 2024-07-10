@@ -10,4 +10,4 @@ RUN bun i
 
 RUN bun run build 
 
-CMD [ "bun", "start:dev" ]
+CMD [ "node", "dist/main" ]
