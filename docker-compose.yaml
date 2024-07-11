@@ -10,24 +10,29 @@ services:
     ports:
       - '5001:5001'
     restart: always
+    networks:
+      - caddy_net
+#   caddy:
+#     container_name: caddy
+#     image: caddy:2.7.4
+#     ports:
+#       - 80:80
+#       - 443:443
+#     volumes:
+#       - ./Caddyfile:/etc/caddy/Caddyfile
+#       - caddy_data:/data
+#       - caddy_config_data:/config
+#     depends_on:
+#       - server
+#     restart: always
+#     networks:
+#       - caddy_net
 
-  caddy:
-    container_name: caddy
-    image: caddy:2.7.4
-    ports:
-      - 80:80
-      - 443:443
-    volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile
-      - caddy_data:/data
-      - caddy_config_data:/config
-    environment:
-      API_DOMAIN: '185.69.155.78'
-    depends_on:
-      - server
-    restart: always
+# volumes:
+#   caddy_data: {}
+#   caddy_config_data: {}
+#   db_volume: {}
 
-volumes:
-  caddy_data: {}
-  caddy_config_data: {}
-  db_volume: {}
+# networks:
+#   caddy_net:
+#     driver: bridge
