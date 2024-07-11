@@ -10,8 +10,6 @@ services:
     ports:
       - '5001:5001'
     restart: always
-    networks:
-      - caddy_net
 #   caddy:
 #     container_name: caddy
 #     image: caddy:2.7.4
